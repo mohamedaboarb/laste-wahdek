@@ -116,7 +116,6 @@ export function DoctorsFilter({ form, onSubmit, setIsFilterOpen }: any) {
       <div className="space-y-3 pt-4 border-t border-slate-50 grid grid-cols-2 gap-2">
         <button
           type="submit"
-          onClick={handleSubmit(onSubmit)}
           className="w-full py-4 bg-primary text-white rounded-sm font-black text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-sm"
         >
           <Filter size={18} />
@@ -125,13 +124,13 @@ export function DoctorsFilter({ form, onSubmit, setIsFilterOpen }: any) {
 
         <button
           type="button"
-          onClick={handleSubmit(() => {
+          onClick={() => {
             reset();
             router.push(pathname); // يمسح الرابط (URL) ويعيد عرض كل الأطباء
             if (typeof setIsFilterOpen === "function") {
               setIsFilterOpen(false); // إغلاق الدروير
             }
-          })}
+          }}
           className="w-full text-xs font-bold text-slate-400 hover:text-red-500 transition-colors flex items-center justify-center gap-2"
         >
           <RotateCcw size={14} /> {t.doctorsFilter.reset}
