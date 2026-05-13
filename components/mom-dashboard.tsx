@@ -8,7 +8,6 @@ import {
   fetchMotherProfile,
   fetchDoctorById,
   type Mother,
-  type Doctor,
   mockDoctors,
   mockMother,
   fetchAssignedDoctors,
