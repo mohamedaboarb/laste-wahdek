@@ -1,10 +1,10 @@
 "use client";
 
-import HeroSection from "@/components/HeroSection";
-import HowItWorks from "@/components/HowItWorks";
-import { FeaturesSection } from "@/components/FeaturesSection";
-import MeetSpecialists from "@/components/MeetSpecialists";
-import OurServices from "@/components/OurServices";
+import HeroSection from "@/components/home-page components/HeroSection";
+import HowItWorks from "@/components/home-page components/HowItWorks";
+import { FeaturesSection } from "@/components/home-page components/FeaturesSection";
+import MeetSpecialists from "@/components/home-page components/MeetSpecialists";
+import OurServices from "@/components/home-page components/OurServices";
 import { useLocale } from "@/contexts/locale-context";
 import { Heart } from "lucide-react";
 

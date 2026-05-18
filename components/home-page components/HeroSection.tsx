@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import SectionDivider from "@/components/sharedComponents/SectionDivider";
-import ImageArm from "./sharedComponents/ImageArm";
+import ImageArm from "../sharedComponents/ImageArm";
 import { useLocale } from "@/contexts/locale-context";
 export default function HeroSection() {
   const { t } = useLocale();

@@ -180,6 +180,9 @@ importers:
       postcss:
         specifier: ^8.5
         version: 8.5.6
+      shadcn-ui:
+        specifier: ^0.9.5
+        version: 0.9.5
       tailwindcss:
         specifier: ^4.2.0
         version: 4.2.0
@@ -1272,6 +1275,10 @@ packages:
   caniuse-lite@1.0.30001769:
     resolution: {integrity: sha512-BCfFL1sHijQlBGWBMuJyhZUhzo7wer5sVj9hqekB/7xn0Ypy+pER/edCYQm4exbXj4WiySGp40P8UuTh6w1srg==}
 
+  chalk@5.6.2:
+    resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
@@ -1669,6 +1676,10 @@ packages:
   semver@7.7.4:
     resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
     engines: {node: '>=10'}
+    hasBin: true
+
+  shadcn-ui@0.9.5:
+    resolution: {integrity: sha512-dsBQWpdLLYCdSdmvOmu53nJhhWnQD1OiblhuhkI4rPYxPKTyfbmZ2NTJHWMu1fXN9PTfN6IVK5vvh+BrjHJx2g==}
     hasBin: true
 
   sharp@0.34.5:
@@ -2785,6 +2796,8 @@ snapshots:
 
   caniuse-lite@1.0.30001769: {}
 
+  chalk@5.6.2: {}
+
   class-variance-authority@0.7.1:
     dependencies:
       clsx: 2.1.1
@@ -3133,6 +3146,10 @@ snapshots:
 
   semver@7.7.4:
     optional: true
+
+  shadcn-ui@0.9.5:
+    dependencies:
+      chalk: 5.6.2
 
   sharp@0.34.5:
     dependencies:

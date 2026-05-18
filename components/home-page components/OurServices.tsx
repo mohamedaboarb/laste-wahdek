@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import HeadlineSection from "./sharedComponents/HeadlineSection";
+import HeadlineSection from "../sharedComponents/HeadlineSection";
 import { useLocale } from "@/contexts/locale-context";
 import { servicesData } from "@/lib/mock-data";
 

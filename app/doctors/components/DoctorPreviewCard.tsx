@@ -53,7 +53,7 @@ function DoctorPreviewCard({ doctor, isFull, hoveredDoc }: any) {
               {doctor.experience}
             </p>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-              {t.DoctorCard.labels.experienceYears}
+              {t.stats.experience}
             </p>
           </div>
           <div className="h-8 w-px bg-slate-100" />

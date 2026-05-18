@@ -1,5 +1,8 @@
 import { Baby, Brain, Video } from "lucide-react";
 import React from "react";
+import { SignupFormValues } from "./schemas";
+
+export type Role = "mother" | "doctor";
 
 export interface Doctor {
   id: string;
@@ -62,6 +65,10 @@ export interface ServiceConfig {
   image: string;
 }
 
+export interface RoleSwitcherProps {
+  value: Role;
+  onChange: (role: Role) => void;
+}
 export const servicesData: ServiceConfig[] = [
   {
     id: "telemedicine",
@@ -451,3 +458,13 @@ export async function fetchAssignedFamilies(
     }, 1000);
   });
 }
+export const signupDefaultValues: SignupFormValues = {
+  role: "mother",
+  fullName: "",
+  email: "",
+  phone: "",
+  password: "",
+  confirmPassword: "",
+  medicalLicenseNumber: "",
+  specialization: "",
+};

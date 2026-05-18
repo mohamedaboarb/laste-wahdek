@@ -1,6 +1,6 @@
 "use client";
-import HeadlineSection from "./sharedComponents/HeadlineSection";
-import DoctorCard from "./sharedComponents/DoctorCard";
+import HeadlineSection from "../sharedComponents/HeadlineSection";
+import DoctorCard from "../sharedComponents/DoctorCard";
 import Link from "next/link";
 import { useLocale } from "@/contexts/locale-context";
 

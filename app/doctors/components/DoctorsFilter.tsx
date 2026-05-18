@@ -104,7 +104,7 @@ export function DoctorsFilter({ form, onSubmit, setIsFilterOpen }: any) {
               key={opt.value}
               type="button"
               onClick={() => setValue("experience", opt.value)}
-              className={`py-3 rounded-xl text-[10px] font-black transition-all border ${watch("experience") === opt.value ? "bg-primary text-white border-primary shadow-md" : "bg-white text-slate-400 border-slate-100"}`}
+              className={`main-btn ${watch("experience") === opt.value ? "bg-primary text-white border-primary shadow-md" : "bg-white text-slate-400 border-slate-100"}`}
             >
               {opt.label}
             </button>
@@ -116,7 +116,7 @@ export function DoctorsFilter({ form, onSubmit, setIsFilterOpen }: any) {
       <div className="space-y-3 pt-4 border-t border-slate-50 grid grid-cols-2 gap-2">
         <button
           type="submit"
-          className="w-full py-4 bg-primary text-white rounded-sm font-black text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-sm"
+          className="w-full py-4 bg-primary text-white rounded-sm font-black text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-sm mb-0"
         >
           <Filter size={18} />
           {t.doctorsFilter.apply}

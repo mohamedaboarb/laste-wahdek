@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+// ─── Role ────────────────────────────────────────────────────────────────────
+
+// ─── Specializations ─────────────────────────────────────────────────────────
+export const SPECIALIZATIONS = ["طب الأطفال", "الطب النفسي"] as const;
+
 // ─── Mother Registration Schema ───
 export const childSchema = z.object({
   name: z.string().min(2, "Child name is required"),

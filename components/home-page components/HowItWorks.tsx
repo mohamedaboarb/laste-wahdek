@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import HeadlineSection from "./sharedComponents/HeadlineSection";
-import StepCard from "./sharedComponents/StepCard";
-import SectionDivider from "./sharedComponents/SectionDivider";
+import HeadlineSection from "../sharedComponents/HeadlineSection";
+import StepCard from "../sharedComponents/StepCard";
+import SectionDivider from "../sharedComponents/SectionDivider";
 import { useLocale } from "@/contexts/locale-context";
 
 function HowItWorks() {

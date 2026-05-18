@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useLocale } from "@/contexts/locale-context";
-import HeadlineSection from "./sharedComponents/HeadlineSection";
-import SectionDivider from "./sharedComponents/SectionDivider";
+import HeadlineSection from "../sharedComponents/HeadlineSection";
+import SectionDivider from "../sharedComponents/SectionDivider";
 
 export function FeaturesSection() {
   const { t, dir } = useLocale();

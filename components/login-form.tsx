@@ -220,7 +220,7 @@ export function LoginForm() {
           <p className="mt-6 text-center text-sm text-muted-foreground">
             {t.login.noAccount}{" "}
             <Link
-              href="/register"
+              href="/signup"
               className="font-semibold text-primary hover:underline"
             >
               {t.login.createAccount}

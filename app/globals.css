@@ -11,7 +11,7 @@
   --secondary: #fb9b8f;
   --destructive: #f57799;
   --card: #ffffff;
-  --card-foreground: #aaf8ff;
+  --card-foreground: #ffaacc;
   --popover: #ffffff;
   --popover-foreground: #1a2332;
   --primary-foreground: #ffffff;
@@ -43,7 +43,7 @@
   --background: #0f1a2e;
   --foreground: #e8f2fa;
   --card: #1a2744;
-  --card-foreground: #e8f2fa;
+  --card-foreground: #ffaacc;
   --popover: #1a2744;
   --popover-foreground: #e8f2fa;
   --primary: #a2d2ff;
@@ -96,6 +96,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+.main-btn {
+  @apply flex flex-1 items-center justify-center gap-2 py-2.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1;
 }
 .btn-primary {
   @apply px-8 py-4 bg-primary text-background rounded-xl font-bold shadow-md hover:bg-red-400 hover:shadow-red-200 transition-all cursor-pointer;
@@ -174,18 +177,26 @@
     );
   }
 }
-@theme: extend {
+/* @theme: extend {
   .btn-primary {
     @apply bg-primary text-background;
   }
   .btn-secondary {
     @apply border-destructive text-white;
   }
-}
+} */
 @layer base {
-  * {
+  html {
+    box-sizing: border-box;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

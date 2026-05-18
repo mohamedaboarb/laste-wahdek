@@ -20,7 +20,7 @@ export function Navbar() {
     if (role === "mother") return "/dashboard/mom";
     if (role === "doctor") return "/dashboard/doctor";
     if (role === "admin") return "/dashboard/admin";
-    return "/register";
+    return "/signup";
   };
 
   return (
@@ -76,7 +76,7 @@ export function Navbar() {
               >
                 {t.nav.login}
               </Link>
-              <Link href="/register">
+              <Link href="/signup">
                 <Button
                   size="sm"
                   className="bg-primary text-primary-foreground hover:bg-primary/90"
@@ -172,7 +172,7 @@ export function Navbar() {
                   {t.nav.login}
                 </Link>
                 <Link
-                  href="/register"
+                  href="/signup"
                   className="text-sm font-medium text-primary"
                   onClick={() => setMobileOpen(false)}
                 >
