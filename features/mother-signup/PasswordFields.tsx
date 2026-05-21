@@ -8,6 +8,7 @@ import type {
 } from "react-hook-form";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { PasswordInput } from "./PasswordInput";
+import Err from "@/components/ui/Err";
 
 interface PasswordFieldsProps<T extends FieldValues> {
   register: UseFormRegister<T>;
@@ -37,11 +38,7 @@ export function PasswordFields<T extends FieldValues>({
             autoComplete="new-password"
             {...register(passwordField)}
           />
-          {passwordError && (
-            <p className="mt-1 text-xs text-destructive" role="alert">
-              {passwordError.message as string}
-            </p>
-          )}
+          <Err field={passwordField} errors={errors} />
         </Field>
 
         {/* Confirm password */}
@@ -53,11 +50,7 @@ export function PasswordFields<T extends FieldValues>({
             autoComplete="new-password"
             {...register(confirmField)}
           />
-          {confirmError && (
-            <p className="mt-1 text-xs text-destructive" role="alert">
-              {confirmError.message as string}
-            </p>
-          )}
+          <Err field={confirmField} errors={errors} />
         </Field>
       </Field>
 

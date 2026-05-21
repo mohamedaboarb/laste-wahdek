@@ -1,3 +1,4 @@
+import { useLocale } from "@/contexts/locale-context";
 import { z } from "zod";
 
 // ─── Role ────────────────────────────────────────────────────────────────────
@@ -73,3 +74,17 @@ export const UserStatsSchema = z.object({
 });
 
 export type UserStats = z.infer<typeof UserStatsSchema>;
+// 1. بناء مخطط التحقق (Zod Schema) مع دعم النصوص المترجمة
+export const loginSchema = (t: any) =>
+  z.object({
+    email: z.string().min(1, { message: t.login.emailRequired }).email({
+      message: t.login.emailInvalid,
+    }),
+    password: z.string().min(6, {
+      message: t.login.passwordMin,
+    }),
+    rememberMe: z.boolean().default(false),
+  });
+
+// استخراج النوع (Type) تلقائياً من المخطط
+export type LoginValues = z.infer<ReturnType<typeof loginSchema>>;

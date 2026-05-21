@@ -17,7 +17,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           {...props}
           ref={ref}
           type={visible ? "text" : "password"}
-          className={cn("pe-10", className)} // pe = padding-end (RTL-aware)
+          className={cn("pe-10", className)}
           autoComplete={props.autoComplete ?? "new-password"}
         />
         <button

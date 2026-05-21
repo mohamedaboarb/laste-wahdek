@@ -15,8 +15,8 @@ import { Input } from "@/components/ui/input";
 
 import { step1Schema, type Step1Values } from "./Doctor.schema";
 import { GenderSelector } from "./GenderSelector";
-import { PasswordFields } from "../signup/PasswordFields";
-import { cn } from "@/lib/utils";
+import { PasswordFields } from "../mother-signup/PasswordFields";
+import Err from "@/components/ui/Err";
 
 interface DoctorStep1Props {
   defaultValues?: Partial<Step1Values>;
@@ -41,13 +41,6 @@ export function DoctorStep1({ defaultValues, onNext }: DoctorStep1Props) {
     },
   });
 
-  const Err = ({ field }: { field: keyof Step1Values }) =>
-    errors[field] ? (
-      <p className="mt-1 text-xs text-destructive" role="alert">
-        {errors[field]?.message as string}
-      </p>
-    ) : null;
-
   return (
     <form onSubmit={handleSubmit(onNext)} noValidate>
       <FieldGroup className="flex flex-col gap-4">
@@ -60,7 +53,7 @@ export function DoctorStep1({ defaultValues, onNext }: DoctorStep1Props) {
             autoComplete="name"
             {...register("fullName")}
           />
-          <Err field="fullName" />
+          <Err field="fullName" errors={errors} />
         </Field>
 
         {/* Email */}
@@ -77,7 +70,7 @@ export function DoctorStep1({ defaultValues, onNext }: DoctorStep1Props) {
           <FieldDescription>
             لن نشارك بريدك الإلكتروني مع أي جهة أخرى.
           </FieldDescription>
-          <Err field="email" />
+          <Err field="email" errors={errors} />
         </Field>
 
         {/* Password */}
@@ -93,10 +86,10 @@ export function DoctorStep1({ defaultValues, onNext }: DoctorStep1Props) {
               <GenderSelector
                 value={field.value ?? ""}
                 onChange={field.onChange}
-                error={errors.gender?.message}
               />
             )}
           />
+          <Err field="gender" errors={errors} />
         </Field>
 
         {/* Next button — matches design (pink, RTL chevron) */}

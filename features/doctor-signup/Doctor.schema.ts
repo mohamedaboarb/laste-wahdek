@@ -53,7 +53,7 @@ export type Step1Values = z.infer<typeof step1Schema>;
 // ─── Step 2 schema — Professional information ─────────────────────────────────
 export const step2Schema = z.object({
   specialization: z.enum(["pediatrician", "psychologist"], {
-    required_error: "يرجى اختيار التخصص",
+    message: "يرجى اختيار التخصص",
   }),
   scientificDegree: z
     .string()

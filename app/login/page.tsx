@@ -1,5 +1,5 @@
-import { LoginForm } from "@/components/login-form";
 import LoadingState from "@/components/ui/LoadingState";
+import { LoginForm } from "@/features/login/login-form";
 import { Suspense } from "react";
 
 export default function LoginPage() {

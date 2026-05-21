@@ -23,6 +23,7 @@ import {
   SCIENTIFIC_DEGREES,
 } from "./Doctor.schema";
 import { CertificateUploader } from "./Certificateuploader";
+import Err from "@/components/ui/Err";
 
 interface DoctorStep2Props {
   defaultValues?: Partial<Step2Values>;
@@ -89,14 +90,6 @@ export function DoctorStep2({
     }
   };
 
-  const Err = ({ field }: { field: keyof Step2Values }) =>
-    errors[field] ? (
-      <p className="mt-1 text-xs text-destructive" role="alert">
-        {(errors[field] as { message?: string })?.message}
-      </p>
-    ) : null;
-
-  // Current available degrees based on selected specialization
   const availableDegrees: readonly string[] = watchedSpecialization
     ? SCIENTIFIC_DEGREES[watchedSpecialization]
     : [];
@@ -123,7 +116,7 @@ export function DoctorStep2({
                 </option>
               ))}
             </select>
-            <Err field="specialization" />
+            <Err field="specialization" errors={errors} />
           </Field>
 
           {/* Scientific degree — options driven by specialization */}
@@ -158,7 +151,7 @@ export function DoctorStep2({
                 سيتم تفعيل هذا الحقل بعد اختيار التخصص.
               </p>
             )}
-            <Err field="scientificDegree" />
+            <Err field="scientificDegree" errors={errors} />
           </Field>
         </div>
 
@@ -174,7 +167,7 @@ export function DoctorStep2({
           <FieldDescription>
             العنوان الذي سيظهر في ملفك الشخصي للأمهات.
           </FieldDescription>
-          <Err field="title" />
+          <Err field="title" errors={errors} />
         </Field>
 
         {/* ── Medical license ──────────────────────────────────────────── */}
@@ -185,12 +178,10 @@ export function DoctorStep2({
           <Input
             id="medicalLicenseNumber"
             placeholder="أدخل رقم الترخيص"
-            dir="ltr"
-            className="text-left"
             autoComplete="off"
             {...register("medicalLicenseNumber")}
           />
-          <Err field="medicalLicenseNumber" />
+          <Err field="medicalLicenseNumber" errors={errors} />
         </Field>
 
         {/* ── Bio (optional) ────────────────────────────────────────────── */}
@@ -213,7 +204,6 @@ export function DoctorStep2({
             {...register("bio")}
           />
           <FieldDescription>حد أقصى 500 حرف.</FieldDescription>
-          <Err field="bio" />
         </Field>
 
         {/* ── Certificates uploader ─────────────────────────────────────── */}
