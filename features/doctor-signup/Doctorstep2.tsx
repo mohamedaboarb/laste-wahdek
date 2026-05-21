@@ -28,7 +28,7 @@ import Err from "@/components/ui/Err";
 interface DoctorStep2Props {
   defaultValues?: Partial<Step2Values>;
   isLoading: boolean;
-  onBack: () => void;
+  onBack: (data?: Step2Values) => void;
   onSubmit: (data: Step2Values) => void;
 }
 
@@ -51,6 +51,7 @@ export function DoctorStep2({
     control,
     watch,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<Step2Values>({
     resolver: zodResolver(step2Schema),
@@ -68,7 +69,6 @@ export function DoctorStep2({
   const watchedSpecialization = watch("specialization");
   const watchedDegree = watch("scientificDegree");
 
-  // ── When specialization changes, reset degree (bidirectional link) ────────
   useEffect(() => {
     setValue("scientificDegree", "", { shouldValidate: false });
   }, [watchedSpecialization, setValue]);
@@ -96,7 +96,7 @@ export function DoctorStep2({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <FieldGroup className="flex flex-col gap-4">
+      <FieldGroup className="flex flex-col gap-1">
         {/* ── Specialization + Degree (linked) ─────────────────────────── */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {/* Specialization */}
@@ -144,10 +144,7 @@ export function DoctorStep2({
               ))}
             </select>
             {!watchedSpecialization && (
-              <p
-                id="degree-hint"
-                className="mt-1 text-xs text-muted-foreground"
-              >
+              <p id="degree-hint" className="mt-0 text-xs text-destructive">
                 سيتم تفعيل هذا الحقل بعد اختيار التخصص.
               </p>
             )}
@@ -164,7 +161,7 @@ export function DoctorStep2({
             autoComplete="off"
             {...register("title")}
           />
-          <FieldDescription>
+          <FieldDescription className="mt-0 text-xs text-destructive">
             العنوان الذي سيظهر في ملفك الشخصي للأمهات.
           </FieldDescription>
           <Err field="title" errors={errors} />
@@ -227,7 +224,7 @@ export function DoctorStep2({
           <Button
             type="button"
             variant="outline"
-            onClick={onBack}
+            onClick={() => onBack(getValues())}
             disabled={isLoading}
             className="gap-2"
           >

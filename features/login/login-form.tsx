@@ -15,6 +15,7 @@ import { useLocale } from "@/contexts/locale-context";
 import { loginSchema, LoginValues } from "@/lib/schemas";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import Err from "@/components/ui/Err";
+import { PasswordInput } from "../mother-signup/PasswordInput";
 
 export function LoginForm() {
   const router = useRouter();
@@ -58,7 +59,6 @@ export function LoginForm() {
       router.refresh();
     } catch (err: any) {
       // طباعة الخطأ الكامل في الكونسول لتتبعه بدقة أثناء التطوير
-      console.error("Caught error in UI:", err);
       const errorCode =
         err && typeof err === "object" && "code" in err
           ? (err.code as AuthError["code"])
@@ -161,9 +161,8 @@ export function LoginForm() {
             <Field>
               <FieldLabel htmlFor="password">{t.login.password}</FieldLabel>
               <div className="relative">
-                <Input
+                <PasswordInput
                   id="password"
-                  type="password"
                   placeholder={t.login.password_placeholder}
                   autoComplete="current-password"
                   disabled={isSubmitting}

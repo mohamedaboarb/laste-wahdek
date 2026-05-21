@@ -1,7 +1,13 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
-import { Upload, X, FileText, Image as ImageIcon } from "lucide-react";
+import {
+  Upload,
+  X,
+  FileText,
+  Image as ImageIcon,
+  AlertCircle,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CertificateUploaderProps {
@@ -190,7 +196,11 @@ export function CertificateUploader({
 
       {/* RHF / Zod error */}
       {error && (
-        <p className="text-xs text-destructive" role="alert">
+        <p
+          className="flex items-center gap-1 text-xs mt-0 text-red-500"
+          role="alert"
+        >
+          <AlertCircle className="h-3 w-3" />
           {error}
         </p>
       )}

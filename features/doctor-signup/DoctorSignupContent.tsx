@@ -14,6 +14,7 @@ export function DoctorSignupContent() {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [step1Data, setStep1Data] = useState<Step1Values | null>(null);
+  const [step2Data, setStep2Data] = useState<Step2Values | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -76,7 +77,7 @@ export function DoctorSignupContent() {
   }
 
   return (
-    <div className="flex flex-col p-6 md:p-8">
+    <div className="flex flex-col px-6 pt-6 pb-2 md:px-8 md:pt-8">
       {/* Step indicator */}
       <div className="mb-6">
         <StepIndicator currentStep={step} />
@@ -100,8 +101,12 @@ export function DoctorSignupContent() {
         />
       ) : (
         <DoctorStep2
+          defaultValues={step2Data ?? undefined}
           isLoading={isLoading}
-          onBack={() => setStep(1)}
+          onBack={(data) => {
+            if (data) setStep2Data(data);
+            setStep(1);
+          }}
           onSubmit={handleStep2Submit}
         />
       )}

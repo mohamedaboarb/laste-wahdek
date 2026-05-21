@@ -1,14 +1,3 @@
-/**
- * login.service.ts
- * ─────────────────────────────────────────────────────────────────────────────
- * Data layer for the login flow using @supabase/ssr browser client.
- *
- * Flow:
- *   1. signInWithPassword  → Supabase Auth (sets HttpOnly session cookie)
- *   2. fetch profile row   → reads `role` + `status` from public.profiles
- *   3. return UserSession  → caller saves in AuthContext + routes by role
- */
-
 import { createBrowserClient } from "@supabase/ssr";
 
 // ─── Types ────────────────────────────────────────────────────────────────────

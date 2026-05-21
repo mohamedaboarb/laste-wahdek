@@ -23,9 +23,6 @@ export function PasswordFields<T extends FieldValues>({
   passwordField = "password" as Path<T>,
   confirmField = "confirmPassword" as Path<T>,
 }: PasswordFieldsProps<T>) {
-  const passwordError = errors[passwordField];
-  const confirmError = errors[confirmField];
-
   return (
     <Field>
       <Field className="grid grid-cols-1 gap-4 sm:grid-cols-2">

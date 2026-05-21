@@ -92,8 +92,6 @@ export function DoctorStep1({ defaultValues, onNext }: DoctorStep1Props) {
           <Err field="gender" errors={errors} />
         </Field>
 
-        {/* Next button — matches design (pink, RTL chevron) */}
-
         <Field>
           <Button type="submit" className="gap-2">
             <ChevronLeft className="size-4" aria-hidden="true" />
