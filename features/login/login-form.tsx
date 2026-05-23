@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,14 +16,36 @@ import { loginSchema, LoginValues } from "@/lib/schemas";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import Err from "@/components/ui/Err";
 import { PasswordInput } from "../mother-signup/PasswordInput";
+import { SocialAuth } from "../mother-signup/Socialauth";
 
 export function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { t } = useLocale();
-
-  // Global API-level error (not field-level)
   const [apiError, setApiError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    const errorDescription = searchParams.get("error_description");
+
+    if (error) {
+      if (
+        error === "invalid_request" ||
+        errorDescription?.includes("expired")
+      ) {
+        setApiError(
+          "عذراً، انتهت صلاحية الجلسة أو أن الحساب غير مصرح له بالدخول حالياً. يرجى المحاولة مجدداً.",
+        );
+      } else if (error === "access_denied") {
+        setApiError("تم رفض تسجيل الدخول. تأكد من صلاحيات الحساب المختار.");
+      } else {
+        setApiError(
+          "حدث خطأ غير متوقع أثناء تسجيل الدخول بجوجل. يرجى المحاولة لاحقاً.",
+        );
+      }
+      router.replace("/login");
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -228,6 +250,7 @@ export function LoginForm() {
                 </>
               )}
             </Button>
+            <SocialAuth />
           </form>
 
           {/* ── Register link ───────────────────────────────────────────────── */}

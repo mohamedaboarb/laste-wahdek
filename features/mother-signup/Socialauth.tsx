@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { FieldSeparator } from "@/components/ui/field";
+import { signUpWithGoogle } from "./Auth.service";
 
 function GoogleIcon() {
   return (
@@ -49,7 +50,7 @@ export function SocialAuth() {
         <Button
           type="button"
           className="w-fit gap-2 rounded-4xl bg-[#F2F2F2] hover:bg-[#E0E0E0] text-slate-800 border-none shadow-sm"
-          // onClick={oauthRedirect.google}
+          onClick={() => signUpWithGoogle()}
         >
           <GoogleIcon />
           <span className="text-xs text-foreground">Sign in with Google</span>

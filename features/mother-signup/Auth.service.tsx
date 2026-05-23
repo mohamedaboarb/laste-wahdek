@@ -24,3 +24,14 @@ export async function registerUser(payload: {
   });
   if (profileError) throw new Error(profileError.message);
 }
+export async function signUpWithGoogle() {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${window.location.origin}/dashboard/mom`,
+    },
+  });
+
+  if (error) throw new Error(error.message);
+  return data;
+}
