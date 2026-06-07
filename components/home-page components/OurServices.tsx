@@ -44,7 +44,7 @@ export default function OurServices() {
                     isActive ? "text-primary" : "text-muted-foreground"
                   }`}
                 >
-                  {tabText.title}
+                  {t.landing.services.title}
                 </motion.span>
 
                 <div

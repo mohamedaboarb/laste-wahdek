@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { useState, useEffect } from "react";
 import { buildDoctorPayload, Step1Values, Step2Values } from "./Doctor.schema";
 import { StepIndicator } from "./Stepindicator";
 import { DoctorStep1 } from "./Doctorstep1";
 import { DoctorStep2 } from "./Doctorstep2";
-import { registerDoctor } from "./Doctor.service";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { useLocale } from "@/contexts/locale-context";
+import { ApiErrorMessage } from "@/components/ui/api-error-message";
+import { registerDoctor } from "./Doctor.service";
+import { DoctorServiceError } from "../types/types";
 
 export function DoctorSignupContent() {
+  const { t } = useLocale();
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [step1Data, setStep1Data] = useState<Step1Values | null>(null);
@@ -18,6 +20,13 @@ export function DoctorSignupContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+
+  // التوجيه التلقائي فور نجاح الطلب
+  useEffect(() => {
+    if (submitted) {
+      router.push("/signup/signup-success");
+    }
+  }, [submitted, router]);
 
   const handleStep1Next = (data: Step1Values) => {
     setStep1Data(data);
@@ -29,87 +38,62 @@ export function DoctorSignupContent() {
   };
 
   const handleStep2Submit = async (data: Step2Values) => {
-    if (!step1Data) return;
+    if (!step1Data || isLoading) return;
     setIsLoading(true);
     setApiError(null);
     try {
       const payload = buildDoctorPayload(step1Data, data);
       const certificates = data.certificates as FileList;
-      await registerDoctor(payload, certificates);
+      await registerDoctor(payload, certificates, t);
       setSubmitted(true);
-      // router.push("/signup/pending");
     } catch (err: unknown) {
-      setApiError(
-        err instanceof Error ? err.message : "حدث خطأ غير متوقع. حاول مجدداً.",
-      );
+      const doctorError = err as DoctorServiceError;
+      if (doctorError && doctorError.code) {
+        const message =
+          t.register.errors[doctorError.code] ?? t.register.errors.unknown;
+        setApiError(message);
+      } else {
+        setApiError(
+          err instanceof Error ? err.message : t.register.errors.unknown,
+        );
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  // ── Success screen ────────────────────────────────────────────────────────
-  if (submitted) {
-    return (
-      <div className="flex flex-1 items-center justify-center p-6">
-        <Card className="w-full max-w-sm p-8 text-center shadow-none border-0">
-          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-primary/10">
-            <svg
-              viewBox="0 0 24 24"
-              className="size-8 fill-none stroke-primary stroke-2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20 6L9 17l-5-5" />
-            </svg>
-          </div>
-          <h2 className="mb-2 text-xl font-bold">تم إرسال طلبك بنجاح</h2>
-          <p className="text-sm text-muted-foreground">
-            سيتم مراجعة بياناتك من قبل الإدارة وإخطارك عبر البريد الإلكتروني
-            خلال 48 ساعة.
-          </p>
-          {/* create a button that redirects to the home page */}
-          <Button onClick={() => router.push("/")} className="mt-4">
-            العودة إلى الصفحة الرئيسية
-          </Button>
-        </Card>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-col px-6 pt-6 pb-2 md:px-8 md:pt-8">
+    <div className="flex flex-col w-full space-y-6 p-1">
       {/* Step indicator */}
-      <div className="mb-6">
+      <div className="w-full">
         <StepIndicator currentStep={step} />
       </div>
 
       {/* API error */}
       {apiError && (
-        <div
-          role="alert"
-          className="mb-4 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
-        >
-          {apiError}
+        <div className="w-full animate-in fade-in slide-in-from-top-2 duration-200">
+          <ApiErrorMessage error={apiError} />
         </div>
       )}
-
       {/* Step forms */}
-      {step === 1 ? (
-        <DoctorStep1
-          defaultValues={step1Data ?? undefined}
-          onNext={handleStep1Next}
-        />
-      ) : (
-        <DoctorStep2
-          defaultValues={step2Data ?? undefined}
-          isLoading={isLoading}
-          onBack={(data) => {
-            if (data) setStep2Data(data);
-            setStep(1);
-          }}
-          onSubmit={handleStep2Submit}
-        />
-      )}
+      <div className="w-full">
+        {step === 1 ? (
+          <DoctorStep1
+            defaultValues={step1Data ?? undefined}
+            onNext={handleStep1Next}
+          />
+        ) : (
+          <DoctorStep2
+            defaultValues={step2Data ?? undefined}
+            isLoading={isLoading}
+            onBack={(data) => {
+              if (data) setStep2Data(data);
+              setStep(1);
+            }}
+            onSubmit={handleStep2Submit}
+          />
+        )}
+      </div>
     </div>
   );
 }

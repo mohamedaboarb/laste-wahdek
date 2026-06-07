@@ -1,37 +1,36 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
+import { MotherRegisterPayload } from "../types/types";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-);
+export async function registerUser(payload: MotherRegisterPayload) {
+  const supabase = createClient();
 
-export async function registerUser(payload: {
-  email: string;
-  password: string;
-}) {
-  // 1. Create auth user (Supabase handles hashing + cookies)
-  const { data, error } = await supabase.auth.signUp({
-    email: payload.email,
-    password: payload.password,
-  });
-  if (error) throw new Error(error.message);
+  const { email, password } = payload;
 
-  // 2. Save profile
-  const { error: profileError } = await supabase.from("profiles").insert({
-    id: data.user!.id,
-    role: "mother",
-    status: "active",
-  });
-  if (profileError) throw new Error(profileError.message);
-}
-export async function signUpWithGoogle() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
+  const { error } = await supabase.auth.signUp({
+    email: email,
+    password: password,
     options: {
-      redirectTo: `${window.location.origin}/dashboard/mom`,
+      emailRedirectTo: `${window.location.origin}/login`,
     },
   });
 
-  if (error) throw new Error(error.message);
-  return data;
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return { success: true };
 }
+
+export const handleLogout = async () => {
+  const supabase = createClient();
+
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+
+    window.location.href = "/login";
+  } catch (error) {
+    console.error("خطأ أثناء تسجيل الخروج:", error);
+  }
+};

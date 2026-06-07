@@ -2,42 +2,37 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-
-// ── Shared shell ──────────────────────────────────────────────────────────────
 import { AuthShell } from "./Authshell";
-
-// ── Role switcher ─────────────────────────────────────────────────────────────
-import { RoleSwitcher } from "./RoleSwitcher";
-
-// ── Role-specific form content ────────────────────────────────────────────────
 import { MotherSignupForm } from "./Mothersignupform";
-
 import { DoctorSignupContent } from "@/features/doctor-signup/DoctorSignupContent";
-
-import type { Role } from "./schema";
-
-// ─── Props ────────────────────────────────────────────────────────────────────
+import { useLocale } from "@/contexts/locale-context";
+import { Role } from "@/lib/mock-data";
+import { SegmentedSelector } from "@/components/ui/SegmentedSelector";
+import { Baby, Stethoscope } from "lucide-react";
 
 // ─── Image-panel copy per role ────────────────────────────────────────────────
-const IMAGE_COPY: Record<
-  Role,
-  { headline: string; subtext: string; imgPath: string }
-> = {
+const IMAGE_COPY: Record<Role, { imgPath: string }> = {
   mother: {
-    headline: "منصة صحة الأم والطفل",
-    subtext: "نربط الأمهات بالأطباء المتخصصين في رحلة الأمومة",
     imgPath: "/images/register-image.jpg",
   },
   doctor: {
-    headline: "انضم إلى منصة صحة الأم والطفل",
-    subtext: "ساعد الأمهات في رحلتهن مع طاقم طبي متخصص وموثوق",
     imgPath: "/images/doctor-image.webp",
   },
 };
+
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { t } = useLocale();
+  const roleOptions = [
+    { id: "mother" as Role, Icon: Baby, label: t.register.roleSelector.mother },
+    {
+      id: "doctor" as Role,
+      Icon: Stethoscope,
+      label: t.register.roleSelector.doctor,
+    },
+  ];
   const [role, setRole] = useState<Role>("mother");
 
   const handleRoleSwitch = (newRole: Role) => {
@@ -50,24 +45,43 @@ export function SignupForm({
   return (
     <AuthShell
       imageSrc={IMAGE_COPY[role].imgPath}
-      imageHeadline={IMAGE_COPY[role].headline}
-      imageSubtext={IMAGE_COPY[role].subtext}
       className={cn("w-full", className)}
       {...props}
     >
-      <div id="auth-scroll-panel" className="flex flex-col overflow-y-auto">
+      <div
+        id="auth-scroll-panel"
+        className="flex flex-col w-full h-full justify-between "
+      >
         {/* ── Shared role-switcher header ─────────────────────────────── */}
-        <div className="px-6 pt-6 md:px-8 md:pt-8">
-          <div className="mb-4 flex flex-col items-center gap-1 text-center">
-            <h1 className="text-2xl font-bold text-primary">إنشاء حساب جديد</h1>
-            <p className="text-sm text-muted-foreground">
-              اختر نوع حسابك للبدء
-            </p>
+        <div className="w-full space-y-6">
+          <div className="text-center md:text-start space-y-2">
+            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+              {t.register.title}
+            </h1>
+            <p className="text-sm text-zinc-400">{t.register.subtitle}</p>
           </div>
-          <RoleSwitcher value={role} onChange={handleRoleSwitch} />
+
+          <div className="pt-2">
+            <SegmentedSelector
+              options={roleOptions}
+              value={role}
+              onChange={handleRoleSwitch}
+            />
+            {role === "doctor" && (
+              <p
+                role="status"
+                className="mt-3 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-xs text-amber-400 leading-relaxed animate-in fade-in slide-in-from-top-1"
+              >
+                {t.signupAlerts.doctorAlert}
+              </p>
+            )}
+          </div>
         </div>
 
-        {role === "mother" ? <MotherSignupForm /> : <DoctorSignupContent />}
+        {/* ── Forms Content ── */}
+        <div className="flex-1 w-full mt-4">
+          {role === "mother" ? <MotherSignupForm /> : <DoctorSignupContent />}
+        </div>
       </div>
     </AuthShell>
   );

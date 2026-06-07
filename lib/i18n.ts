@@ -1,11 +1,7 @@
 import { Brain, Phone, ShieldCheck } from "lucide-react";
-import { Allan } from "next/font/google";
-import { title } from "process";
-import { number } from "zod";
 
 export type Locale = "ar" | "en";
-
-export const defaultLocale: Locale = "ar";
+export const defaultLocale: Locale = "en";
 
 export const translations = {
   ar: {
@@ -76,7 +72,7 @@ export const translations = {
           step4: {
             number: "الخطوة ٤",
             bgNumber: "٤",
-            title: "  تواصلي مع طبيبك",
+            title: " تواصلي مع طبيبك",
             description:
               "احصلي على خطتك العلاجية واستشارات خاصة ومباشرة مع أطبائك المعتمدين في مكان واحد لضمان خصوصيتك.",
           },
@@ -107,7 +103,6 @@ export const translations = {
         },
         cta: "اكتشفي كافة الأطباء",
       },
-
       services: {
         title: "خدماتنا المتميزة",
         subtitle:
@@ -133,7 +128,7 @@ export const translations = {
               "رعاية متخصصة لحديثي الولادة",
             ],
           },
-          psychology: {
+          addiction: {
             title: "الصحة النفسية",
             description:
               "الصحة النفسية لا تقل أهمية عن الصحة البدنية. متخصصون في دعم ما بعد الولادة، إدارة التوتر، والفراغ العاطفي للأمهات.",
@@ -149,56 +144,111 @@ export const translations = {
     // Registration
     register: {
       title: "إنشاء حساب جديد",
+      subtitle: "اختر نوع حسابك للبدء",
       roleSelector: {
-        title: "أنا...",
+        title: "نوع الحساب",
         mother: "أم",
-        doctor: "طبيب/ة",
+        doctor: "طبيب",
       },
       steps: {
         step1: "البيانات الأساسية",
-        step2: "البيانات الصحية",
-        step3: "بيانات الأطفال",
         stepDoctor2: "البيانات المهنية",
       },
+      // الحقول المشتركة والأساسية للخطوة الأولى (صورة 1)
       fields: {
         fullName: "الاسم الكامل",
+        fullNamePlaceholder: "أدخل اسمك الكامل",
         email: "البريد الإلكتروني",
+        email_placeholder: "أدخل بريدك الإلكتروني",
         password: "كلمة المرور",
-        nationalId: "الرقم القومي",
-        age: "العمر",
-        phone: "رقم الموبايل",
-        chronicDiseases: "أمراض مزمنة",
-        generalHistory: "التاريخ المرضي العام",
-        mentalHealth: "الحالة النفسية الحالية",
-        childName: "اسم الطفل",
-        childAge: "عمر الطفل",
-        childHistory: "التاريخ المرضي للطفل",
+        confirmPassword: "تأكيد كلمة المرور",
+        gender: "النوع",
+        male: "ذكر",
+        female: "أنثى",
+      },
+      specializationLabels: {
+        pediatrician: "طب الأطفال",
+        psychologist: "الطب النفسي",
+      },
+      scientificDegrees: {
+        pediatrician: ["ممارس عام أطفال", "أخصائي", "استشاري"],
+        psychologist: ["أخصائي نفسي", "طبيب نفسي"],
+      },
+      validation: {
+        invalid_email: "البريد الإلكتروني غير صحيح",
+        password_min: "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+        password_uppercase: "يجب أن تحتوي على حرف كبير واحد على الأقل",
+        password_number: "يجب أن تحتوي على رقم واحد على الأقل",
+        password_special: "يجب أن تحتوي على رمز خاص واحد على الأقل",
+        password_match: "كلمتا المرور غير متطابقتين",
+        unknown: "حدث خطأ غير متوقع. يرجى المحاولة مجدداً",
+        // الحقول الجديدة الخاصة بالأطباء
+        name_min: "الاسم يجب أن يكون 3 أحرف على الأقل",
+        name_max: "الاسم طويل جداً",
+        gender_required: "يرجى تحديد الجنس",
+        specialization_required: "يرجى اختيار التخصص",
+        degree_required: "يرجى اختيار الدرجة العلمية",
+        title_min: "العنوان المهني يجب أن يكون 5 أحرف على الأقل",
+        title_max: "العنوان المهني طويل جداً",
+        license_required: "رقم الترخيص الطبي مطلوب",
+        license_invalid: "يجب أن يكون رقم الترخيص صالحًا وبحد أقصى 9 أرقام",
+        bio_max: "النبذة لا تتجاوز 500 حرف",
+        file_required: "يرجى رفع شهادة أو أكثر",
+        file_size: "حجم كل ملف يجب أن لا يتجاوز 10 ميغابايت",
+        file_type: "يُسمح فقط بملفات JPG, PNG, WEBP, أو PDF",
+      },
+      errors: {
+        email_not_confirmed:
+          "يرجى تأكيد بريدك الإلكتروني أولاً. تحقق من صندوق الوارد",
+        email_taken: "البريد الإلكتروني مستخدم بالفعل",
+        profile_insert_failed: "تعذّر حفظ بيانات الحساب. يرجى المحاولة مجدداً",
+        license_taken: "رقم الترخيص الطبي هذا مسجل بالفعل",
+        upload_failed: "تعذّر رفع الشهادات. يرجى المحاولة مجدداً",
+        certificates_insert_failed:
+          "تعذّر تسجيل الشهادات. يرجى المحاولة مجدداً",
+        unknown: "حدث خطأ غير متوقع. يرجى المحاولة مجدداً",
+        authLinkInvalidTitle: "فشل تأكيد الحساب",
+        authLinkInvalidDesc:
+          "رابط التأكيد هذا غير صالح أو انتهت صلاحيته. قد يكون الرابط قد استُخدم بالفعل، أو مضى عليه وقت طويل.",
+        backToLogin: "العودة لصفحة تسجيل الدخول",
+      },
+      // 🌟 التحسين: إضافة حقول الطبيب الحصرية (صورة 2) للوضوح ومنع الخلط
+      doctorFields: {
         specialization: "التخصص",
-        licenseId: "رقم الترخيص",
+        selectSpecialization: "اختر تخصصك",
+        scientificDegree: "الدرجة العلمية",
+        selectDegreeFirst: "اختر التخصص أولاً",
+        degreeHint: ".سيتم تفعيل هذا الحقل بعد اختيار التخصص",
+        professionalTitle: "العنوان المهني",
+        professionalTitlePlaceholder:
+          "مثال: دكتور نفسي أخصائي توحد وتأهيل أسري",
+        professionalTitleHint: "العنوان الذي سيظهر في ملفك الشخصي للأمهات.",
+        medicalLicenseNumber: "رقم الترخيص الطبي",
+        medicalLicenseNumberPlaceholder: "أدخل رقم الترخيص",
         bio: "نبذة عنك",
-        pediatrician: "طبيب أطفال",
-        psychologist: "أخصائي نفسي",
-      },
-      chronicOptions: {
-        none: "لا يوجد",
-        diabetes: "سكر",
-        hypertension: "ضغط",
-        thyroid: "غدة درقية",
-        other: "أخرى",
-      },
-      mentalOptions: {
-        none: "لا أعاني من شيء",
-        anxiety: "قلق",
-        postpartum: "اكتئاب ما بعد الولادة",
-        depression: "اكتئاب",
-        other: "أخرى",
+        bioOptional: "اختياري",
+        bioPlaceholder: "...اكتب نبذة مختصرة عن خبرتك وأسلوب عملك",
+        bioHint: "حد أقصى 500 حرف",
+        certificates: "الشهادات والمؤهلات",
+        uploadZoneText: "اسحب الملفات هنا أو ",
+        uploadZoneLink: "اختر من جهازك",
+        uploadZoneHint: "بحد أقصى 10 ميغابايت لكل ملف — JPG, PNG, WEBP, PDF",
+        back: "رجوع",
       },
       addChild: "إضافة طفل آخر",
       removeChild: "إزالة",
+      checkEmail:
+        "لقد أرسلنا رابط تفعيل الحساب إلى البريد الإلكتروني الذي قمت بإدخاله. يرجى الضغط على الرابط لتفعيل حسابك والبدء في استخدام التطبيق.",
+      checkEmailButton: "تفقد بريدك",
       next: "التالي",
       previous: "السابق",
       submit: "إنشاء الحساب",
+      submitting: "جاري إنشاء الحساب...",
+      submitted: "تم إنشاء حسابك بنجاح!",
+      submitLink:
+        "تم إرسال رابط التأكيد إلى بريدك الإلكتروني بنجاح. يرجى تفقده لتفعيل حسابك.",
       alreadyHaveAccount: "لديك حساب بالفعل؟",
+      signInLink: "تسجيل الدخول",
     },
     doctors: {
       title: "اكتشفي أطبائنا",
@@ -233,7 +283,6 @@ export const translations = {
         confirmPaid: "سيتم الحجز بنظام الدفع العادي",
       },
     },
-    // Mother Dashboard
     momDashboard: {
       welcome: "مرحباً",
       sessionsRemaining: "الجلسات المتبقية",
@@ -250,7 +299,6 @@ export const translations = {
       upgrade: "ترقية",
       medicalHistory: "التاريخ الطبي",
     },
-    // Doctor Dashboard
     doctorDashboard: {
       welcome: "مرحباً دكتور",
       assignedFamilies: "العائلات المسجلة",
@@ -260,7 +308,6 @@ export const translations = {
       childrenOf: "أطفال",
       motherInfo: "بيانات الأم",
     },
-    // Login
     login: {
       title: "مرحباً بعودتك",
       subtitle: "سجلي دخولك للمتابعة",
@@ -271,7 +318,6 @@ export const translations = {
       emailRequired: "البريد الإلكتروني مطلوب",
       passwordMin: "كلمة المرور يجب أن تكون على الأقل 8 أحرف",
       password: "كلمة المرور",
-      remember_me: "تذكّرني",
       forgot_password: "نسيت كلمة المرور؟",
       submit: "تسجيل الدخول",
       submitting: "جارٍ التحقق...",
@@ -279,6 +325,8 @@ export const translations = {
       register: "إنشاء حساب",
       reset_sent: "تم إرسال رابط إعادة التعيين إلى بريدك.",
       errors: {
+        email_not_confirmed:
+          "يرجى تأكيد بريدك الإلكتروني أولاً. تحقق من صندوق الوارد",
         invalid_credentials: "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
         pending_approval: "حسابك قيد المراجعة. سيتم إخطارك عند التفعيل.",
         suspended: "تم تعليق حسابك. تواصل مع الدعم.",
@@ -288,7 +336,60 @@ export const translations = {
         email_required: "أدخل بريدك الإلكتروني أولاً.",
       },
     },
-    // Common
+    forgotPassword: {
+      back_to_login: "العودة لتسجيل الدخول",
+      back: "رجوع",
+
+      step1: {
+        title: "نسيت كلمة المرور؟",
+        subtitle: "أدخل بريدك الإلكتروني وسنرسل لك رمز التحقق",
+        email_label: "البريد الإلكتروني",
+        email_placeholder: "example@domain.com",
+        submit: "إرسال رمز التحقق",
+      },
+
+      step2: {
+        title: "تحقق من بريدك",
+        subtitle: "أرسلنا رمزاً مكوناً من 6 أرقام إلى",
+        submit: "تحقق من الرمز",
+        resend_code: "إعادة إرسال الرمز",
+        resend_in: "إعادة الإرسال بعد",
+      },
+
+      step3: {
+        title: "كلمة مرور جديدة",
+        subtitle: "أنشئ كلمة مرور قوية لحسابك",
+        submit: "حفظ كلمة المرور",
+      },
+
+      step4: {
+        title: "تم بنجاح",
+        subtitle:
+          "تم تغيير كلمة مرورك بنجاح. يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة",
+        back_to_login: "تسجيل الدخول",
+      },
+
+      errors: {
+        // Zod field-level
+        email_required: "البريد الإلكتروني مطلوب",
+        email_invalid: "البريد الإلكتروني غير صحيح",
+        otp_required: "رمز التحقق مطلوب",
+        otp_length: "رمز التحقق يجب أن يكون 6 أرقام",
+        otp_digits_only: "رمز التحقق يجب أن يحتوي على أرقام فقط",
+        password_required: "كلمة المرور مطلوبة",
+        password_min: "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+        password_uppercase: "يجب أن تحتوي على حرف كبير واحد على الأقل",
+        password_number: "يجب أن تحتوي على رقم واحد على الأقل",
+        password_symbol: "يجب أن تحتوي على رمز خاص واحد على الأقل",
+        password_mismatch: "كلمتا المرور غير متطابقتين",
+        // API-level
+        api_send_failed: "تعذّر إرسال رمز التحقق. يرجى المحاولة مجدداً",
+        api_email_not_found: "البريد الإلكتروني غير مسجّل",
+        otp_invalid: "رمز التحقق غير صحيح",
+        otp_expired: "انتهت صلاحية الرمز. يرجى طلب رمز جديد",
+        update_failed: "تعذّر تحديث كلمة المرور. يرجى المحاولة مجدداً",
+      },
+    },
     common: {
       loading: "جاري التحميل...",
       error: "حدث خطأ",
@@ -296,8 +397,20 @@ export const translations = {
       years: "سنوات",
       save: "حفظ",
       cancel: "إلغاء",
+      orContinueWith: "أو",
+      googleSignIn: "تسجيل الدخول باستخدام جوجل",
+      exceed: "يتجاوز",
+      unsupportedFile: "نوع الملف غير مدعوم",
     },
-    // Doctors Filter
+    signupAlerts: {
+      applicationSent: "تم إرسال طلبك بنجاح! 🎉",
+      applicationSentDesc:
+        " شكراً لتسجيلك. سيخضع حسابك لمراجعة الإدارة وسيتم إخطارك عبر البريد الإلكتروني خلال 48 ساعة.",
+      doctorAlert: "سيخضع حساب الطبيب لمراجعة الإدارة قبل التفعيل.",
+      passwordClarification:
+        "كلمة المرور يجب أن تكون 8 أحرف على الأقل ويجب أن تحتوي على حرف كبير، رقم، ورمز خاص.",
+      backHome: "back to home",
+    },
     doctorsFilter: {
       name: "اسم الطبيب",
       gender: {
@@ -319,7 +432,6 @@ export const translations = {
       apply: "تطبيق الفلترة",
       reset: "إعادة الضبط",
     },
-
     DoctorCard: {
       status: {
         available: "متاح للحجز",
@@ -356,7 +468,7 @@ export const translations = {
         title: "Laste Wahdek",
         subtitle: "We Hold Your Family",
         description:
-          "Join an exclusive care system that connects you with top pediatricians and psychologists to support your family  and provide comprehensive care for you and your child.",
+          "Join an exclusive care system that connects you with top pediatricians and psychologists to support your family and provide comprehensive care for you and your child.",
         cta: "Start Your Journey",
         ctaSecondary: "Meet Our Doctors",
       },
@@ -432,7 +544,7 @@ export const translations = {
           },
           mai: {
             name: "Dr. Mai Mohamed",
-            role: "Psychiatry Specialist",
+            role: "psychologist Specialist",
             bio: "Expert in offering psychological consultations for mothers and developing children’s behavior using modern and supportive methods.",
           },
           hamed: {
@@ -468,7 +580,7 @@ export const translations = {
               "Specialized infant care",
             ],
           },
-          psychology: {
+          addiction: {
             title: "Psychology",
             description:
               "Mental wellness is just as important as physical health. Our psychologists specialize in postpartum support, stress management, and emotional well-being for mothers.",
@@ -483,56 +595,112 @@ export const translations = {
     },
     register: {
       title: "Create New Account",
+      subtitle: "Choose Your Account Type to Get Started",
       roleSelector: {
-        title: "I am a...",
+        title: "account type",
         mother: "Mother",
         doctor: "Doctor",
       },
       steps: {
         step1: "Basic Information",
-        step2: "Health Information",
-        step3: "Children Data",
-        stepDoctor2: "Professional Info",
+        stepDoctor2: "Professional Information",
       },
       fields: {
         fullName: "Full Name",
+        fullNamePlaceholder: "Enter your full name",
         email: "Email Address",
+        email_placeholder: "Enter Email Address",
         password: "Password",
-        nationalId: "National ID",
-        age: "Age",
-        phone: "Mobile Phone",
-        chronicDiseases: "Chronic Diseases",
-        generalHistory: "General Medical History",
-        mentalHealth: "Current Mental Health",
-        childName: "Child's Name",
-        childAge: "Child's Age",
-        childHistory: "Child's Medical History",
+        confirmPassword: "Confirm Password",
+        gender: "Gender",
+        male: "Male",
+        female: "Female",
+      },
+      specializationLabels: {
+        pediatrician: "Pediatrics",
+        psychologist: "psychologist",
+      },
+      scientificDegrees: {
+        pediatrician: ["General Pediatrician", "Specialist", "Consultant"],
+        psychologist: ["specialized", "Psychiatrist"],
+      },
+      validation: {
+        invalid_email: "Invalid email address",
+        password_min: "Password must be at least 8 characters",
+        password_uppercase: "Must contain at least one uppercase letter",
+        password_number: "Must contain at least one number",
+        password_special: "Must contain at least one special character",
+        password_match: "Passwords do not match",
+        unknown: "An unexpected error occurred. Please try again",
+        //Doctor Fields
+        name_min: "Name must be at least 3 characters",
+        name_max: "Name is too long",
+        gender_required: "Please select your gender",
+        specialization_required: "Please select a specialization",
+        degree_required: "Please select a scientific degree",
+        title_min: "Professional title must be at least 5 characters",
+        title_max: "Professional title is too long",
+        license_required: "Medical license number is required",
+        license_invalid: "must be a valid license number with up to 9 digits",
+        bio_max: "Bio cannot exceed 500 characters",
+        file_required: "Please upload at least one certificate",
+        file_size: "Each file size must not exceed 10 MB",
+        file_type: "Only JPG, PNG, WEBP, or PDF files are allowed",
+      },
+      errors: {
+        email_not_confirmed:
+          "Please confirm your email first. Check your inbox",
+        email_taken: "Email is already in use",
+        profile_insert_failed: "Failed to save account data. Please try again",
+        license_taken: "This medical license number is already registered",
+        upload_failed: "Failed to upload certificates. Please try again",
+        certificates_insert_failed:
+          "Failed to register certificates. Please try again",
+        unknown: "An unexpected error occurred. Please try again",
+        authLinkInvalidTitle: "Account Confirmation Failed",
+        authLinkInvalidDesc:
+          "This confirmation link is invalid or has expired. It may have already been used, or it has been too long since it was issued.",
+        backToLogin: "Back to Login",
+      },
+      doctorFields: {
         specialization: "Specialization",
-        licenseId: "License ID",
+        selectSpecialization: "Select Specialization",
+        scientificDegree: "Scientific Degree",
+        selectDegreeFirst: "Select specialization first",
+        degreeHint:
+          "This field will be activated after selecting a specialization.",
+        professionalTitle: "Professional Title",
+        professionalTitlePlaceholder:
+          "e.g., Psychologist specializing in autism and family rehabilitation",
+        professionalTitleHint:
+          "The title that will appear in your profile to mothers.",
+        medicalLicenseNumber: "Medical License Number",
+        medicalLicenseNumberPlaceholder: "Enter license number",
         bio: "About You",
-        pediatrician: "Pediatrician",
-        psychologist: "Psychologist",
-      },
-      chronicOptions: {
-        none: "None",
-        diabetes: "Diabetes",
-        hypertension: "Hypertension",
-        thyroid: "Thyroid",
-        other: "Other",
-      },
-      mentalOptions: {
-        none: "No issues",
-        anxiety: "Anxiety",
-        postpartum: "Postpartum Depression",
-        depression: "Depression",
-        other: "Other",
+        bioOptional: "Optional",
+        bioPlaceholder:
+          "...Write a brief overview of your experience and work approach",
+        bioHint: "Max 500 characters",
+        certificates: "Certificates and Qualifications",
+        uploadZoneText: "Drag files here or",
+        uploadZoneLink: "choose from your device",
+        uploadZoneHint: "Max 10 MB per file — JPG, PNG, WEBP, PDF",
+        back: "Back",
       },
       addChild: "Add Another Child",
       removeChild: "Remove",
+      checkEmail:
+        "We've sent an account activation link to the email you provided. Please click the link to activate your account and start using the app.",
+      checkEmailButton: "Check Email",
       next: "Next",
       previous: "Previous",
       submit: "Create Account",
+      submitting: "Creating Account...",
+      submitted: "Your account has been created successfully",
+      submitLink:
+        "Confirmation link has been sent to your email successfully. Please check it to activate your account.",
       alreadyHaveAccount: "Already have an account?",
+      signInLink: "Sign in",
     },
     doctors: {
       title: "Discover Our Doctors",
@@ -597,14 +765,13 @@ export const translations = {
     login: {
       title: "Welcome Back",
       subtitle: "Sign in to continue",
-      email: "ُEmail Address",
+      email: "Email Address",
       email_placeholder: "Enter Email Address",
       password_placeholder: "Enter Password",
       emailInvalid: "Invalid email address",
       emailRequired: "Email address is required",
       passwordMin: "Password must be at least 8 characters",
       password: "Password",
-      remember_me: "Remember me",
       forgot_password: "Forgot password?",
       submit: "Login",
       submitting: "Verifying...",
@@ -612,6 +779,8 @@ export const translations = {
       register: "Create an account",
       reset_sent: "Reset link has been sent to your email.",
       errors: {
+        email_not_confirmed:
+          "Please confirm your email first. Check your inbox",
         invalid_credentials: "Incorrect email or password.",
         pending_approval:
           "Your account is under review. You will be notified once activated.",
@@ -623,6 +792,60 @@ export const translations = {
         email_required: "Please enter your email address first.",
       },
     },
+    forgotPassword: {
+      back_to_login: "Back to login",
+      back: "Back",
+
+      step1: {
+        title: "Forgot your password?",
+        subtitle: "Enter your email and we'll send you a verification code",
+        email_label: "Email address",
+        email_placeholder: "example@domain.com",
+        submit: "Send verification code",
+      },
+
+      step2: {
+        title: "Check your email",
+        subtitle: "We sent a 6-digit code to",
+        submit: "Verify code",
+        resend_code: "Resend code",
+        resend_in: "Resend in",
+      },
+
+      step3: {
+        title: "Create new password",
+        subtitle: "Create a strong password for your account",
+        submit: "Save password",
+      },
+
+      step4: {
+        title: "All done",
+        subtitle:
+          "Your password has been successfully reset. You can now sign in with your new password",
+        back_to_login: "Back to login",
+      },
+
+      errors: {
+        // Zod field-level
+        email_required: "Email is required",
+        email_invalid: "Please enter a valid email address",
+        otp_required: "Verification code is required",
+        otp_length: "Code must be exactly 6 digits",
+        otp_digits_only: "Code must contain digits only",
+        password_required: "Password is required",
+        password_min: "Password must be at least 8 characters",
+        password_uppercase: "Must contain at least one uppercase letter",
+        password_number: "Must contain at least one number",
+        password_symbol: "Must contain at least one special character",
+        password_mismatch: "Passwords do not match",
+        // API-level
+        api_send_failed: "Failed to send the code. Please try again",
+        api_email_not_found: "This email address is not registered",
+        otp_invalid: "Invalid verification code",
+        otp_expired: "Code has expired. Please request a new one",
+        update_failed: "Failed to update password. Please try again",
+      },
+    },
     common: {
       loading: "Loading...",
       error: "An error occurred",
@@ -630,6 +853,20 @@ export const translations = {
       years: "years",
       save: "Save",
       cancel: "Cancel",
+      orContinueWith: "or",
+      googleSignIn: "Sign in with Google",
+      exceed: "exceed",
+      unsupportedFile: "Unsupported file type",
+    },
+    signupAlerts: {
+      applicationSent: "Your application has been sent successfully",
+      applicationSentDesc:
+        "Thank you for signing up. Your account will undergo admin review and you will be notified via email within 48 hours.",
+      doctorAlert:
+        "Doctor accounts will be reviewed by admin before activation .",
+      passwordClarification:
+        "Password must be at least 8 characters, including an uppercase letter, a number, and a special character.",
+      backHome: "Back to Home",
     },
     doctorsFilter: {
       name: "Name",

@@ -1,23 +1,21 @@
 "use client";
 
+import { useLocale } from "@/contexts/locale-context";
 import { cn } from "@/lib/utils";
 
 interface StepIndicatorProps {
   currentStep: 1 | 2;
 }
 
-const steps = [
-  { number: 1, label: "البيانات الأساسية" },
-  { number: 2, label: "البيانات المهنية" },
-] as const;
+const steps = [{ number: 1 }, { number: 2 }] as const;
 
 export function StepIndicator({ currentStep }: StepIndicatorProps) {
+  const { t } = useLocale();
   return (
     <div
-      dir="rtl"
       className="flex items-center justify-center gap-0"
       role="list"
-      aria-label="خطوات التسجيل"
+      aria-label="Registration Steps"
     >
       {steps.map((step, idx) => {
         const isActive = step.number === currentStep;
@@ -35,14 +33,39 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
                   isActive
                     ? "bg-primary text-primary-foreground shadow-md"
                     : isCompleted
-                      ? "bg-primary/20 text-primary"
+                      ? " text-primary"
                       : "bg-muted text-muted-foreground",
                 )}
               >
                 {isCompleted ? (
                   // Checkmark for completed steps
-                  <svg viewBox="0 0 16 16" className="size-4 fill-current">
-                    <path d="M13.485 1.431a1.473 1.473 0 0 0-2.104 0L6.42 6.88 3.513 3.977a1.473 1.473 0 0 0-2.104 2.104l3.961 3.962a1.474 1.474 0 0 0 2.104 0l5.011-5.011a1.473 1.473 0 0 0 0-2.104z" />
+                  <svg
+                    height="200px"
+                    width="200px"
+                    version="1.1"
+                    id="Layer_1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    xmlSpace="preserve"
+                    fill="#000000"
+                  >
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        style={{ fill: "#32BEA6" }}
+                        d="M256,0C177.328,82.672,46.672,64,46.672,64s0,92,0,224S256,512,256,512s209.328-92,209.328-224 s0-224,0-224S334.672,82.672,256,0z"
+                      ></path>
+                      <polygon
+                        style={{ fill: "#FFFFFF" }}
+                        points="240.88,355.664 148.048,283.152 167.728,257.936 233.632,309.376 340.576,151.888 367.04,169.856 "
+                      ></polygon>
+                    </g>
                   </svg>
                 ) : (
                   step.number
@@ -54,7 +77,9 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
                   isActive ? "text-primary" : "text-muted-foreground",
                 )}
               >
-                {step.label}
+                {step.number === 1
+                  ? t.register.steps.step1
+                  : t.register.steps.stepDoctor2}
               </span>
             </div>
 

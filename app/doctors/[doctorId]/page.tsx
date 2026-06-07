@@ -8,7 +8,6 @@ import { useAuth } from "@/contexts/auth-context";
 import { useLocale } from "@/contexts/locale-context";
 import DoctorAppointmentPicker from "@/components/sharedComponents/AppointementPicker";
 import LoadingState from "@/components/ui/LoadingState";
-import ErrorState from "@/components/ui/ErrorState";
 import StatItem from "@/components/ui/StatItem";
 import DoctorSelectionCard from "@/components/sharedComponents/DoctorSelectionCard";
 import { useDoctors } from "@/hooks/useDoctors";
@@ -91,7 +90,13 @@ export default function BookingPage() {
   if (isLoading) return <LoadingState message={t.common.loading} />;
   if (!isAuthenticated) return null;
   if (isError || !doctors?.length)
-    return <ErrorState message={t.common.error} />;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#fffbf0]">
+        <div className="text-center p-8 bg-white rounded-3xl shadow-xl">
+          <p className="text-red-500 font-black text-xl">{t.common.error}</p>
+        </div>
+      </div>
+    );
 
   return (
     <main className="flex flex-col lg:grid lg:grid-cols-12 min-h-[calc(100vh-57px)] bg-slate-50/30">

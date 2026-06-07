@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronRight, ChevronLeft, Loader2 } from "lucide-react";
+import { ChevronLeft, Loader2, BookUserIcon, IdCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -16,14 +16,13 @@ import {
 import { Input } from "@/components/ui/input";
 
 import {
-  step2Schema,
   type Step2Values,
   type DoctorSpecialization,
-  SPECIALIZATION_LABELS,
-  SCIENTIFIC_DEGREES,
+  step2schema,
 } from "./Doctor.schema";
 import { CertificateUploader } from "./Certificateuploader";
 import Err from "@/components/ui/Err";
+import { useLocale } from "@/contexts/locale-context";
 
 interface DoctorStep2Props {
   defaultValues?: Partial<Step2Values>;
@@ -32,11 +31,11 @@ interface DoctorStep2Props {
   onSubmit: (data: Step2Values) => void;
 }
 
-// Shared select class — matches Shadcn input aesthetic
+// 🎨 ترقية كلاسات القوائم المنسدلة لتطابق حقول الإدخال الفاخرة للهوية الداكنة
 const selectClass = cn(
-  "flex h-9 w-full text-primary rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors",
-  "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-  "disabled:cursor-not-allowed disabled:opacity-50",
+  "flex h-11 w-full text-white rounded-md border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-sm shadow-sm transition-all focus:bg-zinc-950",
+  "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-purple-500",
+  "disabled:cursor-not-allowed disabled:opacity-40 disabled:bg-zinc-900/20",
 );
 
 export function DoctorStep2({
@@ -45,6 +44,7 @@ export function DoctorStep2({
   onBack,
   onSubmit,
 }: DoctorStep2Props) {
+  const { t } = useLocale();
   const {
     register,
     handleSubmit,
@@ -54,32 +54,52 @@ export function DoctorStep2({
     getValues,
     formState: { errors },
   } = useForm<Step2Values>({
-    resolver: zodResolver(step2Schema),
+    resolver: zodResolver(step2schema(t)),
     defaultValues: {
       specialization: undefined,
       scientificDegree: "",
       title: "",
-      medicalLicenseNumber: "",
+      medicalLicenseNumber: undefined,
       bio: "",
       certificates: undefined,
       ...defaultValues,
     },
   });
 
+  // 🟢 التحديث الاحترافي الكامل لـ الـ useEffect والـ Selectors المعتمدة عليها:
+
   const watchedSpecialization = watch("specialization");
   const watchedDegree = watch("scientificDegree");
 
   useEffect(() => {
-    setValue("scientificDegree", "", { shouldValidate: false });
-  }, [watchedSpecialization, setValue]);
+    // 1. حارس الكود (Guard Clause): إذا لم يتم اختيار تخصص بعد، لا داعي لفحص الدرجات العلمية
+    if (!watchedSpecialization) return;
 
-  // ── When degree changes, infer specialization ──────────────────────────────
+    const currentDegree = getValues("scientificDegree");
+
+    // 2. تحديد نوع المصفوفة صراحةً لمنع الـ Type Inference الخاطئ (never[])
+    const validDegrees: readonly string[] =
+      t.register.scientificDegrees[watchedSpecialization] ?? [];
+
+    // 3. التحقق الذكي: إذا كانت هناك درجة مخزنة ولكنها غير متوافقة مع التخصص الحالي، يتم تصفيرها
+    const isDegreeInvalid =
+      currentDegree && !validDegrees.includes(currentDegree);
+
+    if (isDegreeInvalid) {
+      setValue("scientificDegree", "", { shouldValidate: false });
+    }
+  }, [watchedSpecialization, setValue, getValues, t]);
+
+  // 4. تحديث الـ Selector الممرر لخيارات الـ HTML Select ليكون متوافقاً تماماً وبدون أخطاء تيب-سكربت:
+  const availableDegrees: readonly string[] = watchedSpecialization
+    ? t.register.scientificDegrees[watchedSpecialization]
+    : [];
+
   const handleDegreeChange = (degree: string) => {
     setValue("scientificDegree", degree, { shouldValidate: true });
 
-    // Auto-select specialization based on degree chosen
     const inferredSpec = (
-      Object.entries(SCIENTIFIC_DEGREES) as [
+      Object.entries(t.register.scientificDegrees) as [
         DoctorSpecialization,
         readonly string[],
       ][]
@@ -90,38 +110,58 @@ export function DoctorStep2({
     }
   };
 
-  const availableDegrees: readonly string[] = watchedSpecialization
-    ? SCIENTIFIC_DEGREES[watchedSpecialization]
-    : [];
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <FieldGroup className="flex flex-col gap-1">
-        {/* ── Specialization + Degree (linked) ─────────────────────────── */}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      className="flex flex-col w-full space-y-4" // 👈 توحيد أبعاد الحاوية الرأسية لعدم قص الحواف الجانبية
+    >
+      <FieldGroup className="flex flex-col gap-4">
+        {/* ── التخصص والدرجة العلمية (مرتبطان ببعضهما) ─────────────────────────── */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {/* Specialization */}
-          <Field>
-            <FieldLabel htmlFor="specialization">التخصص</FieldLabel>
+          <Field className="space-y-1.5">
+            <FieldLabel
+              htmlFor="specialization"
+              className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
+            >
+              {t.register.doctorFields.specialization}
+              <span className="text-purple-400">*</span>
+            </FieldLabel>
             <select
               id="specialization"
               className={selectClass}
               {...register("specialization")}
             >
-              <option value="">اختر تخصصك</option>
+              <option value="" className="bg-zinc-950 text-zinc-500">
+                {t.register.doctorFields.selectSpecialization}
+              </option>
               {(
-                Object.keys(SPECIALIZATION_LABELS) as DoctorSpecialization[]
+                Object.keys(
+                  t.register.specializationLabels,
+                ) as DoctorSpecialization[]
               ).map((key) => (
-                <option key={key} value={key}>
-                  {SPECIALIZATION_LABELS[key]}
+                <option
+                  key={key}
+                  value={key}
+                  className="bg-zinc-950 text-white"
+                >
+                  {t.register.specializationLabels[key]}
                 </option>
               ))}
             </select>
             <Err field="specialization" errors={errors} />
           </Field>
 
-          {/* Scientific degree — options driven by specialization */}
-          <Field>
-            <FieldLabel htmlFor="scientificDegree">الدرجة العلمية</FieldLabel>
+          {/* Scientific degree */}
+          <Field className="space-y-1.5">
+            <FieldLabel
+              htmlFor="scientificDegree"
+              className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
+            >
+              {t.register.doctorFields.scientificDegree}
+              <span className="text-purple-400">*</span>
+            </FieldLabel>
             <select
               id="scientificDegree"
               className={selectClass}
@@ -132,80 +172,124 @@ export function DoctorStep2({
                 !watchedSpecialization ? "degree-hint" : undefined
               }
             >
-              <option value="">
+              <option value="" className="bg-zinc-950 text-zinc-500">
                 {watchedSpecialization
-                  ? "اختر الدرجة العلمية"
-                  : "اختر التخصص أولاً"}
+                  ? t.register.doctorFields.scientificDegree
+                  : t.register.doctorFields.selectDegreeFirst}
               </option>
               {availableDegrees.map((degree) => (
-                <option key={degree} value={degree}>
+                <option
+                  key={degree}
+                  value={degree}
+                  className="bg-zinc-950 text-white"
+                >
                   {degree}
                 </option>
               ))}
             </select>
             {!watchedSpecialization && (
-              <p id="degree-hint" className="mt-0 text-xs text-destructive">
-                سيتم تفعيل هذا الحقل بعد اختيار التخصص.
+              <p
+                id="degree-hint"
+                className="text-xs text-amber-500/90 font-medium animate-in fade-in duration-200"
+              >
+                {t.register.doctorFields.degreeHint}
               </p>
             )}
             <Err field="scientificDegree" errors={errors} />
           </Field>
         </div>
 
-        {/* ── Title ───────────────────────────────────────────────────── */}
-        <Field>
-          <FieldLabel htmlFor="title">العنوان المهني</FieldLabel>
-          <Input
-            id="title"
-            placeholder="مثال: دكتور نفسي أخصائي توحد وتأهيل أسري"
-            autoComplete="off"
-            {...register("title")}
-          />
-          <FieldDescription className="mt-0 text-xs text-destructive">
-            العنوان الذي سيظهر في ملفك الشخصي للأمهات.
+        {/* ── المسمى الوظيفي ───────────────────────────────────────────────────── */}
+        <Field className="space-y-1.5">
+          <FieldLabel
+            htmlFor="title"
+            className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
+          >
+            {t.register.doctorFields.professionalTitle}
+            <span className="text-purple-400">*</span>
+          </FieldLabel>
+          <div className="relative">
+            <Input
+              id="title"
+              placeholder={t.register.doctorFields.professionalTitlePlaceholder}
+              autoComplete="off"
+              className="form-input"
+              {...register("title")}
+            />
+            <BookUserIcon
+              className="pointer-events-none absolute inset-s-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500"
+              aria-hidden="true"
+            />
+          </div>
+          <FieldDescription className="text-xs text-zinc-400">
+            {t.register.doctorFields.professionalTitleHint}
           </FieldDescription>
           <Err field="title" errors={errors} />
         </Field>
 
-        {/* ── Medical license ──────────────────────────────────────────── */}
-        <Field>
-          <FieldLabel htmlFor="medicalLicenseNumber">
-            رقم الترخيص الطبي
+        {/* ── رقم ترخيص ممارسة المهنة ──────────────────────────────────────────── */}
+        <Field className="space-y-1.5">
+          <FieldLabel
+            htmlFor="medicalLicenseNumber"
+            className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
+          >
+            {t.register.doctorFields.medicalLicenseNumber}
+            <span className="text-purple-400">*</span>
           </FieldLabel>
-          <Input
-            id="medicalLicenseNumber"
-            placeholder="أدخل رقم الترخيص"
-            autoComplete="off"
-            {...register("medicalLicenseNumber")}
-          />
+          <div className="relative">
+            {" "}
+            <Input
+              id="medicalLicenseNumber"
+              type="number"
+              maxLength={10}
+              placeholder={
+                t.register.doctorFields.medicalLicenseNumberPlaceholder
+              }
+              autoComplete="off"
+              className="form-input"
+              {...register("medicalLicenseNumber")}
+            />
+            <IdCard
+              className="pointer-events-none absolute inset-s-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500"
+              aria-hidden="true"
+            />
+          </div>
           <Err field="medicalLicenseNumber" errors={errors} />
         </Field>
 
-        {/* ── Bio (optional) ────────────────────────────────────────────── */}
-        <Field>
-          <FieldLabel htmlFor="bio">
-            نبذة عنك{" "}
-            <span className="font-normal text-muted-foreground">(اختياري)</span>
+        {/* ── نبذة تعريفية (اختياري) ────────────────────────────────────────────── */}
+        <Field className="space-y-1.5">
+          <FieldLabel
+            htmlFor="bio"
+            className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
+          >
+            {t.register.doctorFields.bio}{" "}
+            <span className="font-normal text-zinc-500 lowercase">
+              ({t.register.doctorFields.bioOptional})
+            </span>
           </FieldLabel>
           <textarea
             id="bio"
             rows={3}
-            placeholder="اكتب نبذة مختصرة عن خبرتك وأسلوب عملك..."
+            placeholder={t.register.doctorFields.bioPlaceholder}
             className={cn(
-              "flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm",
-              "placeholder:text-muted-foreground",
-              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-              "disabled:cursor-not-allowed disabled:opacity-50",
-              "resize-y",
+              "flex min-h-20 max-h-40 w-full rounded-md border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-white shadow-sm transition-all",
+              "placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-purple-500 caret-[#a855f7]",
+              "disabled:cursor-not-allowed disabled:opacity-50 resize-y",
             )}
             {...register("bio")}
           />
-          <FieldDescription>حد أقصى 500 حرف.</FieldDescription>
+          <FieldDescription className="text-xs text-zinc-500">
+            {t.register.doctorFields.bioHint}
+          </FieldDescription>
         </Field>
 
-        {/* ── Certificates uploader ─────────────────────────────────────── */}
-        <Field>
-          <FieldLabel>الشهادات والمؤهلات</FieldLabel>
+        {/* ── رافع الشهادات الطبية ─────────────────────────────────────── */}
+        <Field className="space-y-1.5">
+          <FieldLabel className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+            {t.register.doctorFields.certificates}
+            <span className="text-purple-400">*</span>
+          </FieldLabel>
           <Controller
             name="certificates"
             control={control}
@@ -218,37 +302,35 @@ export function DoctorStep2({
           />
         </Field>
 
-        {/* ── Navigation ───────────────────────────────────────────────── */}
-        <Field className="flex items-center gap-3">
-          {/* Back */}
+        {/* ── أزرار التنقل بين المراحل ── */}
+        <Field className="flex items-center gap-3 pt-3">
+          {/* زر العودة للمرحلة الأولى */}
           <Button
             type="button"
             variant="outline"
             onClick={() => onBack(getValues())}
             disabled={isLoading}
-            className="gap-2"
+            className="flex-1 h-11 bg-zinc-800 text-white gap-2 hover:bg-zinc-700 "
           >
-            رجوع
-            <ChevronRight className="size-4" aria-hidden="true" />
+            {/* دعم حركة السهم للـ RTL والـ LTR بشكل ديناميكي */}
+            <ChevronLeft className="size-4 " aria-hidden="true" />
+            {t.register.doctorFields.back}
           </Button>
 
-          {/* Submit */}
+          {/* زر التأكيد النهائي وإرسال الطلب */}
           <Button
             type="submit"
             disabled={isLoading}
             aria-busy={isLoading}
-            className="gap-2"
+            className="flex-2 h-11 bg-purple-600 font-bold text-white hover:bg-purple-500 active:scale-[0.98] transition-all shadow-lg shadow-purple-600/20 gap-2 group"
           >
             {isLoading ? (
               <>
                 <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                جارٍ إرسال البيانات...
+                {t.register.submitting}
               </>
             ) : (
-              <>
-                <ChevronLeft className="size-4" aria-hidden="true" />
-                إنشاء الحساب
-              </>
+              <>{t.register.submit}</>
             )}
           </Button>
         </Field>

@@ -1,103 +1,98 @@
 import { z } from "zod";
 
-// ─── Specialization options ───────────────────────────────────────────────────
 export const DOCTOR_SPECIALIZATIONS = ["pediatrician", "psychologist"] as const;
 export type DoctorSpecialization = (typeof DOCTOR_SPECIALIZATIONS)[number];
 
-export const SPECIALIZATION_LABELS: Record<DoctorSpecialization, string> = {
-  pediatrician: "طب الأطفال",
-  psychologist: "الطب النفسي",
-};
-
-// ─── Scientific degrees — keyed by specialization ────────────────────────────
-export const SCIENTIFIC_DEGREES: Record<
-  DoctorSpecialization,
-  readonly string[]
-> = {
-  pediatrician: ["ممارس عام أطفال", "أخصائي", "استشاري"],
-  psychologist: ["أخصائي نفسي", "طبيب نفسي"],
-};
-
-// ─── Gender ──────────────────────────────────────────────────────────────────
 export const DOCTOR_GENDERS = ["male", "female"] as const;
 export type DoctorGender = (typeof DOCTOR_GENDERS)[number];
 
 // ─── Step 1 schema — Personal information ────────────────────────────────────
-export const step1Schema = z
-  .object({
-    fullName: z
-      .string()
-      .min(3, { message: "الاسم يجب أن يكون 3 أحرف على الأقل" })
-      .max(100, { message: "الاسم طويل جداً" }),
-    email: z.string().email({ message: "البريد الإلكتروني غير صحيح" }),
-    password: z
-      .string()
-      .min(8, { message: "كلمة المرور يجب أن تكون 8 أحرف على الأقل" })
-      .regex(/[A-Z]/, { message: "يجب أن تحتوي على حرف كبير واحد على الأقل" })
-      .regex(/[0-9]/, { message: "يجب أن تحتوي على رقم واحد على الأقل" })
-      .regex(/[^A-Za-z0-9]/, {
-        message: "يجب أن تحتوي على رمز خاص واحد على الأقل",
+export const step1Schema = (t: any) =>
+  z
+    .object({
+      fullName: z
+        .string()
+        .min(3, { message: t.register.validation.name_min })
+        .max(100, { message: t.register.validation.name_max }),
+      email: z
+        .string()
+        .email({ message: t.register.validation.invalid_email })
+        .trim()
+        .toLowerCase(),
+      password: z
+        .string()
+        .min(8, { message: t.register.validation.password_min })
+        .trim()
+        .regex(/[A-Z]/, { message: t.register.validation.password_uppercase })
+        .regex(/[0-9]/, { message: t.register.validation.password_number })
+        .regex(/[^A-Za-z0-9]/, {
+          message: t.register.validation.password_special,
+        }),
+      confirmPassword: z.string(),
+      gender: z.enum(["male", "female"], {
+        required_error: t.register.validation.gender_required,
       }),
-    confirmPassword: z.string(),
-    gender: z.enum(["male", "female"], {
-      required_error: "يرجى تحديد الجنس",
-    }),
-  })
-  .refine((d) => d.password === d.confirmPassword, {
-    message: "كلمتا المرور غير متطابقتين",
-    path: ["confirmPassword"],
-  });
+    })
+    .refine((d) => d.password === d.confirmPassword, {
+      message: t.register.validation.password_match,
+      path: ["confirmPassword"],
+    });
 
-export type Step1Values = z.infer<typeof step1Schema>;
+// نستخدمReturnType لاستخراج الـ Type بشكل صحيح بما أن الـ Schema أصبحت دالة
+export type Step1Values = z.infer<ReturnType<typeof step1Schema>>;
 
 // ─── Step 2 schema — Professional information ─────────────────────────────────
-export const step2Schema = z.object({
-  specialization: z.enum(["pediatrician", "psychologist"], {
-    message: "يرجى اختيار التخصص",
-  }),
-  scientificDegree: z
-    .string()
-    .min(1, { message: "يرجى اختيار الدرجة العلمية" }),
-  title: z
-    .string()
-    .min(5, { message: "العنوان يجب أن يكون 5 أحرف على الأقل" })
-    .max(150, { message: "العنوان طويل جداً" }),
-  medicalLicenseNumber: z
-    .string()
-    .min(3, { message: "رقم الترخيص الطبي مطلوب" }),
-  bio: z.string().max(500, { message: "النبذة لا تتجاوز 500 حرف" }).optional(),
-  certificates: z
-    .custom<FileList>()
-    .refine((files) => files && files.length > 0, {
-      message: "يرجى رفع شهادة أو أكثر",
-    })
-    .refine(
-      (files) => {
-        if (!files) return true;
-        return Array.from(files).every(
-          (f) => f.size <= 10 * 1024 * 1024, // 10 MB per file
-        );
-      },
-      { message: "حجم كل ملف يجب أن لا يتجاوز 10 ميغابايت" },
-    )
-    .refine(
-      (files) => {
-        if (!files) return true;
-        const allowed = [
-          "image/jpeg",
-          "image/png",
-          "image/webp",
-          "application/pdf",
-        ];
-        return Array.from(files).every((f) => allowed.includes(f.type));
-      },
-      { message: "يُسمح فقط بملفات JPG, PNG, WEBP, أو PDF" },
-    ),
-});
+export const step2schema = (t: any) =>
+  z.object({
+    specialization: z.enum(["pediatrician", "psychologist"], {
+      message: t.register.validation.specialization_required,
+    }),
+    scientificDegree: z
+      .string()
+      .min(1, { message: t.register.validation.degree_required }),
+    title: z
+      .string()
+      .min(5, { message: t.register.validation.title_min })
+      .max(150, { message: t.register.validation.title_max }),
+    medicalLicenseNumber: z
+      .string()
+      .min(1, { message: t.register.validation.license_required })
+      .max(10, { message: t.register.validation.license_invalid })
+      .regex(/[0-9]/, { message: t.register.validation.license_invalid }),
+    bio: z
+      .string()
+      .max(500, { message: t.register.validation.bio_max })
+      .optional(),
+    certificates: z
+      .custom<FileList>()
+      .refine((files) => files instanceof FileList && files.length > 0, {
+        message: t.register.validation.file_required,
+      })
+      .refine(
+        (files) => {
+          if (!files || !(files instanceof FileList)) return true;
+          return Array.from(files).every((f) => f.size <= 10 * 1024 * 1024);
+        },
+        { message: t.register.validation.file_size },
+      )
+      .refine(
+        (files) => {
+          if (!files || !(files instanceof FileList)) return true;
+          const allowed = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "application/pdf",
+          ];
+          return Array.from(files).every((f) => allowed.includes(f.type));
+        },
+        { message: t.register.validation.file_type },
+      ),
+  });
 
-export type Step2Values = z.infer<typeof step2Schema>;
+export type Step2Values = z.infer<ReturnType<typeof step2schema>>;
 
-// ─── Combined doctor form values ──────────────────────────────────────────────
+// Combined Form Values Type
 export type DoctorFormValues = Step1Values & Step2Values;
 
 // ─── Backend payload ──────────────────────────────────────────────────────────
@@ -113,7 +108,6 @@ export interface DoctorRegisterPayload {
   medicalLicenseNumber: string;
   bio?: string;
   status: "pending_approval";
-  // certificates are sent as FormData — handled separately in the service
 }
 
 export function buildDoctorPayload(
@@ -123,7 +117,7 @@ export function buildDoctorPayload(
   return {
     fullName: step1.fullName.trim(),
     email: step1.email.trim().toLowerCase(),
-    password: step1.password,
+    password: step1.password.trim(),
     gender: step1.gender,
     role: "doctor",
     specialization: step2.specialization,

@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar">
       <body
         className={`${cairo.variable} ${geistMono.variable} font-sans antialiased`}
       >

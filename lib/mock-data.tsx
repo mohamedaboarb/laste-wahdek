@@ -1,6 +1,6 @@
-import { Baby, Brain, Video } from "lucide-react";
+import { SignupFormValues } from "@/features/mother-signup/schema";
+import { Baby, Brain, VenusIcon, Video } from "lucide-react";
 import React from "react";
-import { SignupFormValues } from "./schemas";
 
 export type Role = "mother" | "doctor";
 
@@ -460,11 +460,7 @@ export async function fetchAssignedFamilies(
 }
 export const signupDefaultValues: SignupFormValues = {
   role: "mother",
-  fullName: "",
   email: "",
-  phone: "",
   password: "",
   confirmPassword: "",
-  medicalLicenseNumber: "",
-  specialization: "",
 };

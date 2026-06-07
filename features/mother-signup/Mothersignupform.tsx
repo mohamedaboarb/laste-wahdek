@@ -1,10 +1,10 @@
-// "use client";
+"use client";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-
+import { useRouter } from "next/navigation"; // 👈 استيراد الـ Router للتوجيه البرمجي
+import { AlertTriangle, Loader2, MailIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -14,11 +14,16 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
-import { signupSchema, buildPayload, type SignupFormValues } from "./schema";
+import { signupSchema, type SignupFormValues } from "./schema";
 import { registerUser } from "./Auth.service";
 import { SocialAuth } from "./Socialauth";
 import { PasswordFields } from "./PasswordFields";
-import { useRouter } from "next/navigation";
+import { useLocale } from "@/contexts/locale-context";
+import Link from "next/link";
+import Err from "@/components/ui/Err";
+import { MotherRegisterPayload } from "../types/types";
+import { cn } from "@/lib/utils";
+import { ApiErrorMessage } from "@/components/ui/api-error-message";
 
 const MOTHER_DEFAULTS: SignupFormValues = {
   role: "mother",
@@ -27,69 +32,92 @@ const MOTHER_DEFAULTS: SignupFormValues = {
   confirmPassword: "",
 };
 
-/**
- * MotherSignupForm
- * Pure form content — no layout shell. Rendered inside AuthShell by the
- * parent SignupForm router.
- */
 export function MotherSignupForm() {
-  const router = useRouter();
+  const { t } = useLocale();
+  const router = useRouter(); // 👈 تفعيل الـ router هنا
   const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [apiMessage, setApiMessage] = useState<string | null>(null);
+
+  const buildPayload = (values: SignupFormValues): MotherRegisterPayload => {
+    return {
+      email: values.email.trim().toLowerCase(),
+      password: values.password,
+      role: "mother",
+      status: "active",
+    };
+  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<SignupFormValues>({
-    resolver: zodResolver(signupSchema),
+    resolver: zodResolver(signupSchema(t)),
     defaultValues: MOTHER_DEFAULTS,
   });
 
+  const handleInputChange =
+    (fieldName: "email" | "password") =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      register(fieldName).onChange(e);
+      if (apiMessage) setApiMessage(null);
+    };
+
   const onSubmit = async (values: SignupFormValues) => {
     setIsLoading(true);
-    setApiError(null);
+    setApiMessage(null);
+
     try {
-      await registerUser(buildPayload(values));
-      router.push("/dashboard/mom");
+      const response = await registerUser(buildPayload(values));
+
+      if (response.success) {
+        reset();
+        router.push("/signup/signup-success");
+      }
     } catch (err: unknown) {
-      setApiError(
-        err instanceof Error ? err.message : "حدث خطأ غير متوقع. حاول مجدداً.",
+      setApiMessage(
+        err instanceof Error ? err.message : t.login.errors.unknown,
       );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const Err = ({ field }: { field: keyof SignupFormValues }) =>
-    errors[field] ? (
-      <p className="mt-1 text-xs text-destructive" role="alert">
-        {errors[field]?.message as string}
-      </p>
-    ) : null;
-
   return (
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="flex flex-col p-6 md:p-8"
+        className="flex flex-col py-2 space-y-4"
       >
-        <FieldGroup className="flex flex-1 flex-col gap-4">
+        <FieldGroup className="flex flex-col gap-4">
           {/* Email */}
-          <Field>
-            <FieldLabel htmlFor="m-email">البريد الإلكتروني</FieldLabel>
-            <Input
-              id="m-email"
-              type="email"
-              placeholder="example@domain.com"
-              autoComplete="email"
-              {...register("email")}
-            />
-            <FieldDescription>
-              لن نشارك بريدك الإلكتروني مع أي جهة أخرى.
-            </FieldDescription>
-            <Err field="email" />
+          <Field className="space-y-1.5">
+            <FieldLabel
+              htmlFor="m-email"
+              className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
+            >
+              {t.register.fields.email}
+              <span className="text-purple-400">*</span>
+            </FieldLabel>
+            <div className="relative">
+              <Input
+                id="m-email"
+                type="email"
+                placeholder={t.register.fields.email_placeholder}
+                autoComplete="email"
+                disabled={isLoading}
+                className="form-input"
+                {...register("email")}
+                onChange={handleInputChange("email")}
+              />
+              <MailIcon
+                className="pointer-events-none absolute inset-s-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500"
+                aria-hidden="true"
+              />
+            </div>
+            <Err field={"email"} errors={errors} />
           </Field>
 
           <PasswordFields register={register} errors={errors} />
@@ -97,50 +125,51 @@ export function MotherSignupForm() {
           {/* Hidden role */}
           <input type="hidden" {...register("role")} value="mother" />
 
-          {/* API error */}
-          {apiError && (
-            <p
-              role="alert"
-              className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
-            >
-              {apiError}
-            </p>
-          )}
+          {/* API Error Messages (فقط في حال حدوث خطأ بما أن النجاح ينقل لصفحة أخرى) */}
+          {apiMessage && <ApiErrorMessage error={apiMessage} />}
 
-          {/* Submit */}
-          <Field className="mt-auto pt-2">
+          {/* Submit Button Section */}
+          <Field className="pt-2">
             <Button
               type="submit"
-              className="w-full"
               disabled={isLoading}
+              className="w-full bg-purple-600 font-bold text-white hover:bg-purple-500 active:scale-[0.98] transition-all h-11 shadow-lg shadow-purple-600/20"
+              size="lg"
               aria-busy={isLoading}
             >
               {isLoading ? (
-                <>
+                <span className="flex items-center justify-center gap-2">
                   <Loader2
-                    className="ml-2 size-4 animate-spin"
+                    className="h-4 w-4 animate-spin"
                     aria-hidden="true"
                   />
-                  جارٍ إنشاء الحساب...
-                </>
+                  {t.register.submitting}
+                </span>
               ) : (
-                "إنشاء الحساب"
+                t.register.submit
               )}
             </Button>
           </Field>
 
           {/* Social auth */}
-          <SocialAuth />
+          <SocialAuth
+            disabled={isLoading}
+            onError={(errorText) => {
+              setApiMessage(errorText);
+            }}
+          />
 
           {/* Sign-in link */}
-          <FieldDescription className="text-center">
-            لديك حساب بالفعل؟{" "}
-            <a
+          <FieldDescription className="text-center text-sm text-zinc-400 pt-4">
+            {t.register.alreadyHaveAccount}
+            <Link
               href="/login"
-              className="font-medium text-primary hover:underline"
+              className={cn(
+                "font-bold text-purple-400 hover:text-purple-300 hover:underline ms-1.5 transition-colors",
+              )}
             >
-              تسجيل الدخول
-            </a>
+              {t.register.signInLink}
+            </Link>
           </FieldDescription>
         </FieldGroup>
       </form>

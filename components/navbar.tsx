@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { Globe, Menu, X, Heart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { handleLogout } from "@/features/mother-signup/Auth.service";
 
 export function Navbar() {
   const { t, locale, setLocale, dir } = useLocale();
@@ -62,7 +63,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={logout}
+                onClick={handleLogout}
                 className="text-sm text-foreground"
               >
                 {t.nav.logout}

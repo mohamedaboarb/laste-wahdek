@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { FieldSeparator } from "@/components/ui/field";
-import { signUpWithGoogle } from "./Auth.service";
+import { useLocale } from "@/contexts/locale-context";
+import { signInWithGoogle } from "../login/login.service";
 
 function GoogleIcon() {
   return (
@@ -39,21 +40,39 @@ function GoogleIcon() {
     </svg>
   );
 }
-export function SocialAuth() {
+export function SocialAuth({
+  disabled,
+  onError,
+}: {
+  disabled?: boolean;
+  onError?: (message: string) => void;
+}) {
+  const { t } = useLocale();
   return (
     <>
       <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-        أو
+        {t.common.orContinueWith}
       </FieldSeparator>
 
       <div className="flex items-center justify-center">
         <Button
           type="button"
           className="w-fit gap-2 rounded-4xl bg-[#F2F2F2] hover:bg-[#E0E0E0] text-slate-800 border-none shadow-sm"
-          onClick={() => signUpWithGoogle()}
+          onClick={async () => {
+            try {
+              await signInWithGoogle();
+            } catch (err: unknown) {
+              const msg =
+                err instanceof Error ? err.message : t.login.errors.unknown;
+              onError?.(msg);
+            }
+          }}
+          disabled={disabled}
         >
           <GoogleIcon />
-          <span className="text-xs text-foreground">Sign in with Google</span>
+          <span className="text-xs text-foreground">
+            {t.common.googleSignIn}
+          </span>
         </Button>
       </div>
     </>

@@ -9,7 +9,10 @@ import { Navbar } from "@/components/navbar";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const showNavbar = pathname !== "/login" && pathname !== "/signup";
+  const showNavbar =
+    pathname !== "/login" &&
+    pathname !== "/signup" &&
+    pathname !== "/forgot-password";
 
   // إنشاء الـ QueryClient داخل useState لمنع إعادة إنشائه مع كل Render للمتصفح
   const [queryClient] = useState(

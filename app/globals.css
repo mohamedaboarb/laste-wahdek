@@ -100,6 +100,10 @@
 .main-btn {
   @apply flex flex-1 items-center justify-center gap-2 py-2.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1;
 }
+.form-input {
+  @apply ps-10 bg-zinc-900/60 border-zinc-800 text-white placeholder:text-zinc-500 focus-visible:ring-purple-500 h-11;
+  caret-color: #a855f7 !important;
+}
 .btn-primary {
   @apply px-8 py-4 bg-primary text-background rounded-xl font-bold shadow-md hover:bg-red-400 hover:shadow-red-200 transition-all cursor-pointer;
 }
@@ -189,7 +193,37 @@
   html {
     box-sizing: border-box;
   }
+  .form-input::-webkit-outer-spin-button,
+  .form-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
+  .form-input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  .form-input:-webkit-autofill,
+  .form-input:-webkit-autofill:hover,
+  .form-input:-webkit-autofill:focus,
+  .form-input:-webkit-autofill:active {
+    -webkit-text-fill-color: #ffffff !important;
+    color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #18181b inset !important;
+    border-color: #27272a !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* 🌟 إجبار المتصفح على إبقاء النص أبيض حتى لو احتوى على خطأ إملائي أو قواعدي */
+  .form-input::spelling-error {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+  .form-input::grammar-error {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
   *,
   *::before,
   *::after {
