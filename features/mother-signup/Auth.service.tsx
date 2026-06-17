@@ -30,7 +30,5 @@ export const handleLogout = async () => {
     if (error) throw error;
 
     window.location.href = "/login";
-  } catch (error) {
-    console.error("خطأ أثناء تسجيل الخروج:", error);
-  }
+  } catch (error) {}
 };

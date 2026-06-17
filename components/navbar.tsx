@@ -155,7 +155,7 @@ export function Navbar() {
                 </Link>
                 <button
                   onClick={() => {
-                    logout();
+                    handleLogout();
                     setMobileOpen(false);
                   }}
                   className="text-start text-sm font-medium text-foreground"

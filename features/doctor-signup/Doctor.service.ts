@@ -105,12 +105,6 @@ export async function registerDoctor(
         });
 
       if (uploadError) {
-        console.error(
-          "[Doctor Signup] certificate upload failed:",
-          uploadError,
-          "file:",
-          safeName,
-        );
         throw {
           code: "upload_failed",
         } satisfies DoctorServiceError;
