@@ -7,6 +7,7 @@ import MeetSpecialists from "@/components/home-page components/MeetSpecialists";
 import OurServices from "@/components/home-page components/OurServices";
 import { useLocale } from "@/contexts/locale-context";
 import { Heart } from "lucide-react";
+import PricingSection from "@/components/home-page components/PricingSection";
 
 export default function HomePage() {
   const { t, dir } = useLocale();
@@ -17,6 +18,7 @@ export default function HomePage() {
       <FeaturesSection />
       <HowItWorks />
       <MeetSpecialists />
+      <PricingSection />
       <OurServices />
       <footer dir={dir} className="border-t border-border bg-card py-10">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4">

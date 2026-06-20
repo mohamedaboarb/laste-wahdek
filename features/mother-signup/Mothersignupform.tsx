@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
-import { signupSchema, type SignupFormValues } from "./schema";
+import { buildPayload, signupSchema, type SignupFormValues } from "./schema";
 import { registerUser } from "./Auth.service";
 import { SocialAuth } from "./Socialauth";
 import { PasswordFields } from "./PasswordFields";
@@ -37,15 +37,6 @@ export function MotherSignupForm() {
   const router = useRouter(); // 👈 تفعيل الـ router هنا
   const [isLoading, setIsLoading] = useState(false);
   const [apiMessage, setApiMessage] = useState<string | null>(null);
-
-  const buildPayload = (values: SignupFormValues): MotherRegisterPayload => {
-    return {
-      email: values.email.trim().toLowerCase(),
-      password: values.password,
-      role: "mother",
-      status: "active",
-    };
-  };
 
   const {
     register,

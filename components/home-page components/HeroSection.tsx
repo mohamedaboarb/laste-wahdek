@@ -83,12 +83,12 @@ export default function HeroSection() {
               />
             </motion.div>
             <ImageArm
-              side={"right"}
+              side="right"
               title="pediatricians"
               positionClasses="translate-x-[85px] md:translate-x-[130px] lg:translate-x-[150px]"
             />
             <ImageArm
-              side={"left"}
+              side="left"
               title="psychologists"
               positionClasses="-translate-x-[150px] md:-translate-x-[230px] lg:-translate-x-[250px] "
             />

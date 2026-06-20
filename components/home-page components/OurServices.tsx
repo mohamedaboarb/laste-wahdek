@@ -19,7 +19,7 @@ export default function OurServices() {
   const xOffset = dir === "rtl" ? 40 : -40;
 
   return (
-    <section className="py-12 bg-linear-to-b from-popover-foreground to-primary overflow-hidden">
+    <section className="py-12 bg-background overflow-hidden">
       <div className="max-w-6xl mx-auto px-4">
         <HeadlineSection
           heading={t.landing.services.title}
@@ -44,7 +44,7 @@ export default function OurServices() {
                     isActive ? "text-primary" : "text-muted-foreground"
                   }`}
                 >
-                  {t.landing.services.title}
+                  {t.landing.services.items[service.id as ServiceId].title}
                 </motion.span>
 
                 <div

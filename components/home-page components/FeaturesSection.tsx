@@ -9,7 +9,7 @@ export function FeaturesSection() {
   const { t, dir } = useLocale();
 
   return (
-    <main dir={dir} className="bg-background py-20 relative overflow-hidden">
+    <main className="bg-background py-20 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4">
         <HeadlineSection
           heading={t.landing.features.title}

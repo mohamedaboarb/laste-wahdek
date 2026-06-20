@@ -59,7 +59,7 @@ function HowItWorks() {
           </div>
         </div>
       </div>
-      <SectionDivider fillColor={"background"} />
+      <SectionDivider fillColor="background" />
     </div>
   );
 }

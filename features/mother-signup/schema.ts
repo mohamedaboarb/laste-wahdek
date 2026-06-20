@@ -28,7 +28,7 @@ export const signupSchema = (t: any) =>
 
 export type SignupFormValues = z.infer<ReturnType<typeof signupSchema>>;
 
-// ─── Backend Payload for Mother ─────────────────────────────────────────────
+// ─── Backend Payload for Mother
 
 export function buildPayload(values: SignupFormValues): MotherRegisterPayload {
   return {

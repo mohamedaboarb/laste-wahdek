@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Star, Award } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useLocale } from "@/contexts/locale-context";
-import DoctorAppointmentPicker from "@/components/sharedComponents/AppointementPicker";
+import DoctorAppointmentPicker from "@/components/sharedComponents/AppointmentPicker";
 import LoadingState from "@/components/ui/LoadingState";
 import StatItem from "@/components/ui/StatItem";
 import DoctorSelectionCard from "@/components/sharedComponents/DoctorSelectionCard";
@@ -148,7 +148,7 @@ export default function BookingPage() {
           </p>
         </div>
       </aside>
-      {/* Appointement Section */}
+      {/* appointment Section */}
       <div className="lg:col-span-8 p-6 md:p-16">
         <div className="max-w-4xl mx-auto">
           {assignedDoctors.length > 0 && (

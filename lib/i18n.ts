@@ -78,6 +78,65 @@ export const translations = {
           },
         },
       },
+      pricing: {
+        title: "باقات الرعاية",
+        subtitle:
+          "اختاري الباقة التي تناسب احتياجات عائلتك، بدون أي التزامات معقدة.",
+        popularBadge: "الأكثر شيوعاً",
+        currency: "ج.م",
+        monthlySubscription: "اشتراك شهري",
+        sessionNote:
+          "جميع الجلسات في كل الباقات مدتها 30 دقيقة كحد أقصى، ويتم حجزها تلقائياً حسب توفر الطبيب والأم.",
+        plans: [
+          {
+            id: "basic",
+            name: "الرعاية الأساسية",
+            description:
+              "المتابعة الروتينية، التوجيه الأولي، والإجابة على الأسئلة اليومية الشائعة.",
+            price: "450",
+            featured: false,
+            cta: "اشتركي الآن",
+            features: [
+              "2 جلسة استشارية شهرياً (30 دقيقة كحد أقصى للجلسة)",
+              "نظام حجز آلي فوري بناءً على الأوقات المتاحة للطبيب والأم",
+              "تنبيهات تذكيرية تلقائية قبل الموعد بـ 30 دقيقة لضمان الحضور",
+              "الوصول الكامل لمكتبة المقالات والكتب التعليمية على المنصة",
+            ],
+          },
+          {
+            id: "integrated",
+            name: "الدعم المتكامل",
+            description:
+              "التعامل مع تحديات محددة وأكثر عمقاً: تأخر نطق، تعديل سلوك، اضطرابات نمو، ودعم نفسي للأم.",
+            price: "1,200",
+            featured: true,
+            cta: "ابدئي رحلتك اليوم",
+            features: [
+              "4 جلسات استشارية شهرياً (بمعدل جلسة أسبوعياً، 30 دقيقة كحد أقصى للجلسة)",
+              "نظام حجز آلي فوري ومؤمن بناءً على جدول الأخصائي",
+              "تقرير تقييمي رقمي يرسله الأخصائي مباشرة إلى لوحة تحكم الأم بعد كل جلسة",
+              "ملف طبي موحد للطفل (Medical Profile) للرجوع إليه في الجلسات القادمة",
+              "خطة تدريبات منزلية عملية ومكتوبة للأم لتطبيقها مع طفلها (Action Plan)",
+            ],
+          },
+          {
+            id: "comprehensive",
+            name: "الرعاية الشاملة",
+            description:
+              "الحالات الدقيقة والمعقدة التي تتطلب خبرة طبية ونفسية كبرى: توحد، ADHD، واستشارات تخصصية.",
+            price: "2,200",
+            featured: false,
+            cta: "احصلي على رعاية تخصصية",
+            features: [
+              "6 جلسات استشارية شهرياً (30 دقيقة كحد أقصى للجلسة)",
+              "حجز آلي فوري ومباشر مع نخبة كبار الاستشاريين على المنصة",
+              "ملف طبي متطور مع إمكانية رفع الفحوصات والتقارير الخارجية قبل الجلسة",
+              "خطة علاجية وتطورية شاملة ومحدثة دورياً في حساب الأم",
+              "تقرير ختامي معتمد من الاستشاري بنهاية كل شهر يوضح حالة وتطور الطفل",
+            ],
+          },
+        ],
+      },
       specialists: {
         title: "قابلي أصدقاء عائلتكِ الجدد",
         subtitle: "صديقٌ بالرداء الأبيض ينتظركِ دائمًا لتقديم الدعم لأسرتكِ.",
@@ -128,7 +187,7 @@ export const translations = {
               "رعاية متخصصة لحديثي الولادة",
             ],
           },
-          addiction: {
+          psychology: {
             title: "الصحة النفسية",
             description:
               "الصحة النفسية لا تقل أهمية عن الصحة البدنية. متخصصون في دعم ما بعد الولادة، إدارة التوتر، والفراغ العاطفي للأمهات.",
@@ -271,7 +330,7 @@ export const translations = {
       slogan: "اختاري الموعد المفضل لديك لبدء رحلة الرعاية.",
       selectDateAndTime: "اختاري التاريخ والوقت",
       labels: {
-        appointementSet: "الموعد محدد ليوم",
+        appointmentSet: "الموعد محدد ليوم",
         book: "تأكيد الحجز",
         busy: "الطبيب غير متاح في هذا الوقت، يرجى اختيار وقت آخر",
       },
@@ -529,6 +588,65 @@ export const translations = {
           },
         },
       },
+      pricing: {
+        title: "Care Packages",
+        subtitle:
+          "Choose the plan that fits your family's needs, with zero complicated commitments.",
+        popularBadge: "Most Popular",
+        currency: "EGP",
+        monthlySubscription: "Monthly Subscription",
+        sessionNote:
+          "Every session in every package is a strict 30-minute maximum, booked automatically based on doctor and mother availability.",
+        plans: [
+          {
+            id: "basic",
+            name: "Essential Care",
+            description:
+              "Routine follow-up, initial guidance, and answers to everyday common questions.",
+            price: "450",
+            featured: false,
+            cta: "Subscribe Now",
+            features: [
+              "2 consultation sessions / month (30 min max per session)",
+              "Instant automated booking based on doctor & mother availability",
+              "Automatic reminder alerts 30 minutes before each appointment",
+              "Full access to the platform's articles & educational library",
+            ],
+          },
+          {
+            id: "integrated",
+            name: "Integrated Support",
+            description:
+              "Handling specific, deeper challenges: speech delay, behavior support, developmental disorders, and psychological support for mothers.",
+            price: "1,200",
+            featured: true,
+            cta: "Start Your Journey Today",
+            features: [
+              "4 consultation sessions / month (about weekly, 30 min max per session)",
+              "Secure instant automated booking based on the specialist's schedule",
+              "Digital assessment report sent directly to the mother's dashboard after each session",
+              "Unified child Medical Profile for reference in upcoming sessions",
+              "Written, practical home-training Action Plan for the mother",
+            ],
+          },
+          {
+            id: "comprehensive",
+            name: "Comprehensive Care",
+            description:
+              "Precise, complex cases requiring major medical and psychological expertise: autism, ADHD, and specialized consultations.",
+            price: "2,200",
+            featured: false,
+            cta: "Get Specialized Care",
+            features: [
+              "6 consultation sessions / month (30 min max per session)",
+              "Instant, direct automated booking with the platform's top consultants",
+              "Advanced medical profile with the ability to upload external scans & reports before the session",
+              "Comprehensive treatment & development plan, updated periodically",
+              "Certified closing report from the consultant at the end of every month",
+            ],
+          },
+        ],
+      },
       specialists: {
         title: "Meet Your Family’s New Friends",
         subtitle:
@@ -580,7 +698,7 @@ export const translations = {
               "Specialized infant care",
             ],
           },
-          addiction: {
+          psychology: {
             title: "Psychology",
             description:
               "Mental wellness is just as important as physical health. Our psychologists specialize in postpartum support, stress management, and emotional well-being for mothers.",
@@ -723,7 +841,7 @@ export const translations = {
       title: "Make Your Booking",
       selectDateAndTime: "Select Date and Time",
       labels: {
-        appointementSet: "Appointement is set for",
+        appointmentSet: "appointment is set for",
         book: "Confirm Booking",
         busy: "Doctor is not available at this time, please choose another time",
       },

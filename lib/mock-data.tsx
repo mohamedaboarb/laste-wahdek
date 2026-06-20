@@ -1,5 +1,5 @@
 import { SignupFormValues } from "@/features/mother-signup/schema";
-import { Baby, Brain, VenusIcon, Video } from "lucide-react";
+import { Baby, Brain, Video } from "lucide-react";
 import React from "react";
 
 export type Role = "mother" | "doctor";
@@ -333,88 +333,6 @@ export async function fetchDoctorById(id: string): Promise<Doctor | undefined> {
   });
 }
 
-// ─── Mock Login ───
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export async function mockLogin(credentials: LoginCredentials): Promise<{
-  success: boolean;
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role: "mother" | "doctor";
-    assignedDoctors?: string[];
-  };
-}> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Demo mother account
-      if (
-        credentials.email === "fatma@email.com" &&
-        credentials.password === "password123"
-      ) {
-        resolve({
-          success: true,
-          user: {
-            id: "mom-1",
-            name: mockMother.fullName,
-            email: mockMother.email,
-            role: "mother",
-            assignedDoctors: mockMother.assignedDoctors,
-          },
-        });
-        return;
-      }
-      // Demo doctor account
-      if (
-        credentials.email === "sarah@clinic.com" &&
-        credentials.password === "password123"
-      ) {
-        resolve({
-          success: true,
-          user: {
-            id: "doc-1",
-            name: mockDoctors[0].fullName,
-            email: mockDoctors[0].email,
-            role: "doctor",
-          },
-        });
-        return;
-      }
-      // Quick-login as mother
-      if (credentials.email === "demo-mother") {
-        resolve({
-          success: true,
-          user: {
-            id: "mom-1",
-            name: mockMother.fullName,
-            email: mockMother.email,
-            role: "mother",
-            assignedDoctors: mockMother.assignedDoctors,
-          },
-        });
-        return;
-      }
-      // Quick-login as doctor
-      if (credentials.email === "demo-doctor") {
-        resolve({
-          success: true,
-          user: {
-            id: "doc-1",
-            name: mockDoctors[0].fullName,
-            email: mockDoctors[0].email,
-            role: "doctor",
-          },
-        });
-        return;
-      }
-      resolve({ success: false });
-    }, 800);
-  });
-}
 export const fetchAssignedDoctors = (ids: string[]) => {
   return mockDoctors.filter((doc) => ids.includes(doc.id));
 };

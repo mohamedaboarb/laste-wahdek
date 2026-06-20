@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   format,
   addDays,
@@ -153,7 +153,7 @@ export default function DoctorAppointmentPicker({
           <p className="text-popover-foreground/80 font-bold text-sm md:text-base leading-relaxed text-center md:text-start">
             {selectedDate &&
               selectedTime &&
-              `${t.booking.labels.appointementSet} ${format(
+              `${t.booking.labels.appointmentSet} ${format(
                 selectedDate,
                 "EEEE, d MMMM yyyy",
                 {
