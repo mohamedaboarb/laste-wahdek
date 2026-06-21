@@ -13,6 +13,7 @@ import { useLoginForm } from "@/hooks/useLoginForm";
 import { ApiErrorMessage } from "@/components/ui/api-error-message";
 import { AuthShell } from "../mother-signup/Authshell";
 import { cn } from "@/lib/utils";
+import IconTextField from "@/components/ui/IconTextField";
 
 export function LoginForm() {
   const {
@@ -72,7 +73,7 @@ export function LoginForm() {
           noValidate
         >
           {/* Email */}
-          <Field className="space-y-1.5">
+          {/* <Field className="space-y-1.5">
             <FieldLabel
               htmlFor="email"
               className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
@@ -96,8 +97,20 @@ export function LoginForm() {
               />
             </div>
             <Err field="email" errors={errors} />
-          </Field>
-
+          </Field> */}
+          <IconTextField
+            id="email"
+            label={t.login.email}
+            icon={MailIcon}
+            fieldName="email"
+            type="email"
+            placeholder={t.login.email_placeholder}
+            autoComplete="email"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            onChange={handleInputChange("email")}
+          />
           {/* Password */}
           <Field className="space-y-1.5">
             <FieldLabel

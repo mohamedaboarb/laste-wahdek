@@ -37,6 +37,7 @@ import { OtpInput } from "./OtpInput";
 import { ResendTimer } from "./ResendTimer";
 import { StepShell } from "./StepShell";
 import { PasswordFields } from "@/features/mother-signup/PasswordFields";
+import IconTextField from "@/components/ui/IconTextField";
 
 type Step = "email" | "otp" | "password" | "success";
 
@@ -189,12 +190,12 @@ export function ForgotPasswordForm() {
                   noValidate
                   className="flex flex-col space-y-4 pt-2"
                 >
-                  <Field className="space-y-2">
+                  {/* <Field className="space-y-2">
                     <FieldLabel
                       htmlFor="fp-email"
                       className="text-xs font-bold text-zinc-300 uppercase tracking-wider"
                     >
-                      {fp.step1.email_label}{" "}
+                      {fp.step1.email_label}
                       <span className="text-purple-500">*</span>
                     </FieldLabel>
                     <div className="relative">
@@ -217,8 +218,21 @@ export function ForgotPasswordForm() {
                       />
                     </div>
                     <Err field="email" errors={emailForm.formState.errors} />
-                  </Field>
-
+                  </Field> */}
+                  <IconTextField
+                    id="fp-email"
+                    label={fp.step1.email_label}
+                    icon={Mail}
+                    required={true}
+                    fieldName="email"
+                    type="email"
+                    placeholder={fp.step1.email_placeholder}
+                    autoComplete="email"
+                    disabled={emailForm.formState.isSubmitting}
+                    register={emailForm.register}
+                    errors={emailForm.formState.errors}
+                    onChange={() => setApiError(null)}
+                  />
                   <Field className="pt-2">
                     <Button
                       type="submit"

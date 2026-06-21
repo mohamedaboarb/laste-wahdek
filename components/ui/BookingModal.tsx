@@ -70,7 +70,7 @@ export default function BookingModal({
           <div className="flex flex-col sm:flex-row gap-4 w-full pt-4 border-t border-slate-50">
             {isErrorCase ? (
               <Link
-                href="/dashboard/mom"
+                href="/dashboard/mother"
                 onClick={onClose}
                 className="w-full flex items-center justify-center gap-3.5 py-5 rounded-2xl bg-slate-950 text-white font-black text-lg shadow-xl shadow-slate-900/10 hover:bg-slate-800 transition active:scale-[0.97]"
               >

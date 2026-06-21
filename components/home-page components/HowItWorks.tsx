@@ -14,7 +14,7 @@ function HowItWorks() {
 
   return (
     <div className="bg-linear-to-b from bg-background to-primary relative">
-      <div className="mx-auto max-w-7xl px-4 py-16 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 py-20 overflow-hidden">
         <HeadlineSection
           heading={t.landing.howItWorks.title}
           paragraph={t.landing.howItWorks.subtitle}

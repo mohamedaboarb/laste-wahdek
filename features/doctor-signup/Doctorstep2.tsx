@@ -23,6 +23,7 @@ import {
 import { CertificateUploader } from "./Certificateuploader";
 import Err from "@/components/ui/Err";
 import { useLocale } from "@/contexts/locale-context";
+import IconTextField from "@/components/ui/IconTextField";
 
 interface DoctorStep2Props {
   defaultValues?: Partial<Step2Values>;
@@ -200,7 +201,7 @@ export function DoctorStep2({
         </div>
 
         {/* ── المسمى الوظيفي ───────────────────────────────────────────────────── */}
-        <Field className="space-y-1.5">
+        {/* <Field className="space-y-1.5">
           <FieldLabel
             htmlFor="title"
             className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
@@ -225,10 +226,10 @@ export function DoctorStep2({
             {t.register.doctorFields.professionalTitleHint}
           </FieldDescription>
           <Err field="title" errors={errors} />
-        </Field>
+        </Field> */}
 
         {/* ── رقم ترخيص ممارسة المهنة ──────────────────────────────────────────── */}
-        <Field className="space-y-1.5">
+        {/* <Field className="space-y-1.5">
           <FieldLabel
             htmlFor="medicalLicenseNumber"
             className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
@@ -255,8 +256,34 @@ export function DoctorStep2({
             />
           </div>
           <Err field="medicalLicenseNumber" errors={errors} />
-        </Field>
+        </Field> */}
+        {/* المسمى الوظيفي - مع التلميح الاختياري */}
+        <IconTextField
+          id="title"
+          label={t.register.doctorFields.professionalTitle}
+          icon={BookUserIcon}
+          required={true}
+          fieldName="title"
+          placeholder={t.register.doctorFields.professionalTitlePlaceholder}
+          autoComplete="off"
+          register={register}
+          errors={errors}
+          description={t.register.doctorFields.professionalTitleHint} // 👈 مررنا التلميح هنا بسهولة
+        />
 
+        {/* رقم ترخيص ممارسة المهنة */}
+        <IconTextField
+          id="medicalLicenseNumber"
+          label={t.register.doctorFields.medicalLicenseNumber}
+          icon={IdCard}
+          required={true}
+          fieldName="medicalLicenseNumber"
+          type="number"
+          placeholder={t.register.doctorFields.medicalLicenseNumberPlaceholder}
+          autoComplete="off"
+          register={register}
+          errors={errors}
+        />
         {/* ── نبذة تعريفية (اختياري) ────────────────────────────────────────────── */}
         <Field className="space-y-1.5">
           <FieldLabel

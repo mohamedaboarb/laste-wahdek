@@ -20,6 +20,7 @@ import Err from "@/components/ui/Err";
 import { useLocale } from "@/contexts/locale-context";
 import Link from "next/link";
 import { SegmentedSelector } from "@/components/ui/SegmentedSelector";
+import IconTextField from "@/components/ui/IconTextField";
 
 interface DoctorStep1Props {
   defaultValues?: Partial<Step1Values>;
@@ -67,7 +68,7 @@ export function DoctorStep1({ defaultValues, onNext }: DoctorStep1Props) {
     >
       <FieldGroup className="flex flex-col gap-4">
         {/* Full name */}
-        <Field className="space-y-1.5">
+        {/* <Field className="space-y-1.5">
           <FieldLabel
             htmlFor="fullName"
             className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
@@ -89,10 +90,10 @@ export function DoctorStep1({ defaultValues, onNext }: DoctorStep1Props) {
             />
           </div>
           <Err field="fullName" errors={errors} />
-        </Field>
+        </Field> */}
 
         {/* Email */}
-        <Field className="space-y-1.5">
+        {/* <Field className="space-y-1.5">
           <FieldLabel
             htmlFor="email"
             className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
@@ -115,8 +116,33 @@ export function DoctorStep1({ defaultValues, onNext }: DoctorStep1Props) {
             />
           </div>
           <Err field="email" errors={errors} />
-        </Field>
+        </Field> */}
+        {/* Full name */}
+        <IconTextField
+          id="fullName"
+          label={t.register.fields.fullName}
+          icon={Contact}
+          required={true}
+          fieldName="fullName"
+          placeholder={t.register.fields.fullNamePlaceholder}
+          autoComplete="name"
+          register={register}
+          errors={errors}
+        />
 
+        {/* Email */}
+        <IconTextField
+          id="email"
+          label={t.register.fields.email}
+          icon={MailIcon}
+          required={true}
+          fieldName="email"
+          type="email"
+          placeholder="example@domain.com"
+          autoComplete="email"
+          register={register}
+          errors={errors}
+        />
         {/* Password */}
         <PasswordFields register={register} errors={errors} />
 

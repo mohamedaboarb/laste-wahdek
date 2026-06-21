@@ -11,9 +11,7 @@ export default function PricingSection() {
   const plans = t.landing.pricing.plans;
 
   return (
-    <section className="relative py-20 bg-linear-to-b from bg-primary to-background overflow-hidden">
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-secondary/10 rounded-full blur-[140px] pointer-events-none" />
-
+    <section className="relative py-20 bg-linear-to-b from-primary to-background overflow-hidden">
       <div className="relative mx-auto max-w-7xl px-4 z-10">
         <HeadlineSection
           heading={t.landing.pricing.title}
@@ -45,15 +43,13 @@ export default function PricingSection() {
               )}
 
               {/* العنوان والوصف */}
-              <div className="space-y-2">
+              <div className="space-y-2 min-h-[90px] flex flex-col justify-between">
                 <h3
-                  className={`text-xl font-black tracking-tight ${
-                    plan.featured ? "text-primary" : "text-foreground"
-                  }`}
+                  className={`text-xl font-black tracking-tight ${plan.featured ? "text-primary" : "text-foreground"}`}
                 >
                   {plan.name}
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed min-h-10">
+                <p className="text-muted-foreground text-sm leading-relaxed grow">
                   {plan.description}
                 </p>
               </div>

@@ -24,6 +24,7 @@ import Err from "@/components/ui/Err";
 import { MotherRegisterPayload } from "../types/types";
 import { cn } from "@/lib/utils";
 import { ApiErrorMessage } from "@/components/ui/api-error-message";
+import IconTextField from "@/components/ui/IconTextField";
 
 const MOTHER_DEFAULTS: SignupFormValues = {
   role: "mother",
@@ -84,7 +85,7 @@ export function MotherSignupForm() {
       >
         <FieldGroup className="flex flex-col gap-4">
           {/* Email */}
-          <Field className="space-y-1.5">
+          {/* <Field className="space-y-1.5">
             <FieldLabel
               htmlFor="m-email"
               className="text-xs font-semibold text-zinc-300 uppercase tracking-wider"
@@ -109,8 +110,20 @@ export function MotherSignupForm() {
               />
             </div>
             <Err field={"email"} errors={errors} />
-          </Field>
-
+          </Field> */}
+          <IconTextField
+            id="email"
+            label={t.register.fields.email}
+            icon={MailIcon}
+            required={true}
+            errors={errors}
+            register={register}
+            fieldName="email"
+            type="email"
+            placeholder={t.register.fields.email_placeholder}
+            autoComplete="email"
+            disabled={isLoading}
+          />
           <PasswordFields register={register} errors={errors} />
 
           {/* Hidden role */}

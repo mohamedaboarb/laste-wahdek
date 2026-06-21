@@ -18,7 +18,7 @@ export function Navbar() {
   };
 
   const getDashboardPath = () => {
-    if (role === "mother") return "/dashboard/mom";
+    if (role === "mother") return "/dashboard/mother";
     if (role === "doctor") return "/dashboard/doctor";
     if (role === "admin") return "/dashboard/admin";
     return "/signup";

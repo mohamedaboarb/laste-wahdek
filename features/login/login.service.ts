@@ -124,6 +124,6 @@ export async function signInWithGoogle(): Promise<void> {
 // ─── Role → route mapping
 
 export const ROLE_DASHBOARD: Record<UserRole, string> = {
-  mother: "/dashboard/mom",
+  mother: "/dashboard/mother",
   doctor: "/dashboard/doctor",
 };
