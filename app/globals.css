@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+@import "react-datepicker/dist/react-datepicker.css";
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -73,6 +73,7 @@
   --sidebar-border: #2a3f5c;
   --sidebar-ring: #6bb3c9;
 }
+
 .hand-container {
   filter: drop-shadow(0 10px 15px rgba(245, 119, 153, 0.15));
 }

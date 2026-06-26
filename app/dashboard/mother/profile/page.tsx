@@ -1,7 +1,5 @@
-import React from "react";
+import ProfilePage from "@/features/dashboard/profile/ProfilePage";
 
-function page() {
-  return <div>profile section for the mother and her children's</div>;
+export default function Page() {
+  return <ProfilePage />;
 }
-
-export default page;

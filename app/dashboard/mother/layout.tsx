@@ -1,12 +1,17 @@
-import SideNavbar from "@/components/dashboard/SideNavbar";
+import SideNavbar from "@/features/dashboard/SideNavbar";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-      <div className="w-full flex-none md:w-64">
+    <div className="flex ">
+      <aside className=" sticky top-14 h-[calc(100vh-57px)] lg:w-64 shrink-0 overflow-hidden border-r">
         <SideNavbar />
-      </div>
-      <div className="grow p-6 md:overflow-y-auto md:p-12">{children}</div>
+      </aside>
+
+      <main className="flex-1 p-4 overflow-hidden">{children}</main>
     </div>
   );
 }

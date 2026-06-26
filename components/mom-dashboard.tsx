@@ -277,7 +277,7 @@ export function MomDashboard() {
             </div>
 
             {/* Mother Health Info */}
-            <div className="mt-6 rounded-2xl border border-border bg-card p-5">
+            {/* <div className="mt-6 rounded-2xl border border-border bg-card p-5">
               <div className="mb-3 flex items-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
                 <h3 className="font-semibold text-foreground">
@@ -300,7 +300,7 @@ export function MomDashboard() {
                   {mother.generalHistory}
                 </p>
               )}
-            </div>
+            </div> */}
           </motion.div>
         </div>
       </div>

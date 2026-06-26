@@ -1,21 +1,18 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useLocale } from "@/contexts/locale-context"
-import { useAuth } from "@/contexts/auth-context"
-import {
-  fetchAssignedFamilies,
-  type AssignedFamily,
-} from "@/lib/mock-data"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useLocale } from "@/contexts/locale-context";
+import { useAuth } from "@/contexts/auth-context";
+import { fetchAssignedFamilies, type AssignedFamily } from "@/lib/mock-data";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Users,
   Baby,
@@ -26,15 +23,17 @@ import {
   Shield,
   ChevronDown,
   ChevronUp,
-} from "lucide-react"
+} from "lucide-react";
 
 export function DoctorDashboard() {
-  const { t, dir, locale } = useLocale()
-  const { user, isAuthenticated, login } = useAuth()
-  const [families, setFamilies] = useState<AssignedFamily[]>([])
-  const [loading, setLoading] = useState(true)
-  const [selectedFamily, setSelectedFamily] = useState<AssignedFamily | null>(null)
-  const [expandedFamilies, setExpandedFamilies] = useState<string[]>([])
+  const { t, dir, locale } = useLocale();
+  const { user, isAuthenticated, login } = useAuth();
+  const [families, setFamilies] = useState<AssignedFamily[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedFamily, setSelectedFamily] = useState<AssignedFamily | null>(
+    null,
+  );
+  const [expandedFamilies, setExpandedFamilies] = useState<string[]>([]);
 
   useEffect(() => {
     // Auto-login as mock doctor for demo purposes
@@ -44,35 +43,35 @@ export function DoctorDashboard() {
         name: "Dr. Sarah Ahmed",
         email: "sarah@clinic.com",
         role: "doctor",
-      })
+      });
     }
 
     async function loadData() {
-      const data = await fetchAssignedFamilies("doc-1")
-      setFamilies(data)
-      setLoading(false)
+      const data = await fetchAssignedFamilies("doc-1");
+      setFamilies(data);
+      setLoading(false);
     }
 
-    loadData()
-  }, [isAuthenticated, login])
+    loadData();
+  }, [isAuthenticated, login]);
 
   const toggleFamily = (id: string) => {
     setExpandedFamilies((prev) =>
-      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]
-    )
-  }
+      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id],
+    );
+  };
 
   if (loading) {
     return (
-      <div className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-background">
+      <div className="flex min-h-[calc(100vh-56px)] items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <span className="ms-3 text-muted-foreground">{t.common.loading}</span>
       </div>
-    )
+    );
   }
 
   return (
-    <div dir={dir} className="min-h-[calc(100vh-64px)] bg-background px-4 py-8">
+    <div dir={dir} className="min-h-[calc(100vh-56px)] bg-background px-4 py-8">
       <div className="mx-auto max-w-5xl">
         {/* Welcome Header */}
         <motion.div
@@ -112,7 +111,9 @@ export function DoctorDashboard() {
         {families.length === 0 ? (
           <div className="rounded-2xl border border-border bg-card p-12 text-center">
             <AlertCircle className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-            <p className="text-muted-foreground">{t.doctorDashboard.noFamilies}</p>
+            <p className="text-muted-foreground">
+              {t.doctorDashboard.noFamilies}
+            </p>
           </div>
         ) : (
           <div className="flex flex-col gap-4">
@@ -141,7 +142,10 @@ export function DoctorDashboard() {
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Badge variant="secondary" className="bg-muted text-muted-foreground">
+                    <Badge
+                      variant="secondary"
+                      className="bg-muted text-muted-foreground"
+                    >
                       <Baby className="me-1 h-3 w-3" />
                       {family.children.length}
                     </Badge>
@@ -177,7 +181,9 @@ export function DoctorDashboard() {
                               <span className="text-muted-foreground">
                                 {locale === "ar" ? "العمر: " : "Age: "}
                               </span>
-                              <span className="text-foreground">{family.mother.age}</span>
+                              <span className="text-foreground">
+                                {family.mother.age}
+                              </span>
                             </div>
                             <div>
                               <span className="text-muted-foreground">
@@ -201,7 +207,8 @@ export function DoctorDashboard() {
 
                         {/* Children */}
                         <h4 className="mb-3 text-sm font-semibold text-foreground">
-                          {t.doctorDashboard.childrenOf} {family.mother.fullName}
+                          {t.doctorDashboard.childrenOf}{" "}
+                          {family.mother.fullName}
                         </h4>
                         <div className="grid gap-3 md:grid-cols-2">
                           {family.children.map((child) => (
@@ -257,7 +264,8 @@ export function DoctorDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-foreground">
               <FileText className="h-5 w-5 text-primary" />
-              {t.doctorDashboard.viewHistory} - {selectedFamily?.mother.fullName}
+              {t.doctorDashboard.viewHistory} -{" "}
+              {selectedFamily?.mother.fullName}
             </DialogTitle>
           </DialogHeader>
           {selectedFamily && (
@@ -268,28 +276,38 @@ export function DoctorDashboard() {
                 </h4>
                 <div className="flex flex-col gap-1 text-sm text-muted-foreground">
                   <p>
-                    {locale === "ar" ? "الأمراض المزمنة: " : "Chronic Diseases: "}
-                    {selectedFamily.mother.chronicDiseases.join(", ") || (locale === "ar" ? "لا يوجد" : "None")}
+                    {locale === "ar"
+                      ? "الأمراض المزمنة: "
+                      : "Chronic Diseases: "}
+                    {selectedFamily.mother.chronicDiseases.join(", ") ||
+                      (locale === "ar" ? "لا يوجد" : "None")}
                   </p>
                   <p>
                     {locale === "ar" ? "التاريخ المرضي: " : "Medical History: "}
-                    {selectedFamily.mother.generalHistory || (locale === "ar" ? "لا يوجد" : "None")}
+                    {selectedFamily.mother.generalHistory ||
+                      (locale === "ar" ? "لا يوجد" : "None")}
                   </p>
                   <p>
                     {locale === "ar" ? "الحالة النفسية: " : "Mental Health: "}
-                    {selectedFamily.mother.mentalHealth || (locale === "ar" ? "لا يوجد" : "None")}
+                    {selectedFamily.mother.mentalHealth ||
+                      (locale === "ar" ? "لا يوجد" : "None")}
                   </p>
                 </div>
               </div>
               {selectedFamily.children.map((child) => (
-                <div key={child.id} className="rounded-lg border border-border p-4">
+                <div
+                  key={child.id}
+                  className="rounded-lg border border-border p-4"
+                >
                   <div className="mb-1 flex items-center gap-2">
                     <Baby className="h-4 w-4 text-accent" />
                     <span className="font-medium text-foreground">
                       {child.name} ({child.age} {t.common.years})
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground">{child.diseaseHistory}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {child.diseaseHistory}
+                  </p>
                 </div>
               ))}
             </div>
@@ -297,5 +315,5 @@ export function DoctorDashboard() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }

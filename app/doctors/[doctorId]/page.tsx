@@ -99,7 +99,7 @@ export default function BookingPage() {
     );
 
   return (
-    <main className="flex flex-col lg:grid lg:grid-cols-12 min-h-[calc(100vh-57px)] bg-slate-50/30">
+    <main className="flex flex-col lg:grid lg:grid-cols-12 min-h-[calc(100vh-56px)] bg-slate-50/30">
       <aside className="lg:col-span-4 bg-linear-to-br from-primary to-popover-foreground p-8 flex flex-col gap-8 shadow-inner text-white">
         <div className="flex flex-col items-center text-center">
           <motion.div

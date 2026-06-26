@@ -9,8 +9,13 @@ export async function registerUser(payload: MotherRegisterPayload) {
   const { error } = await supabase.auth.signUp({
     email: email,
     password: password,
+
     options: {
       emailRedirectTo: `${window.location.origin}/login`,
+      data: {
+        role: payload.role,
+        full_name: "",
+      },
     },
   });
 
