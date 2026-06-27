@@ -5,6 +5,7 @@ import { Camera, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { storageService } from "@/features/storage/storage.service";
 
 interface ImageUploaderProps {
   imageUrl?: string | null;
@@ -18,10 +19,6 @@ interface ImageUploaderProps {
 
   onChange?: (file: File) => void;
 }
-
-const MAX_SIZE = 1 * 1024 * 1024;
-
-const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 export function ImageUploader({
   imageUrl,
@@ -55,15 +52,10 @@ export function ImageUploader({
 
     if (!file) return;
 
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      toast.error("Only JPG, PNG and WEBP images are allowed.");
-
-      return;
-    }
-
-    if (file.size > MAX_SIZE) {
-      toast.error("Image size must be less than 1 MB.");
-
+    try {
+      storageService.validateImage(file);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Invalid file.");
       return;
     }
 
@@ -112,6 +104,7 @@ export function ImageUploader({
         <>
           <button
             type="button"
+            disabled={loading}
             onClick={() => inputRef.current?.click()}
             className="
               absolute
@@ -124,6 +117,7 @@ export function ImageUploader({
               flex
               items-center
               justify-center
+              disabled:cursor-not-allowed
             "
           >
             {loading ? (
@@ -137,7 +131,7 @@ export function ImageUploader({
             ref={inputRef}
             hidden
             type="file"
-            accept="image/*"
+            accept=".jpg,.jpeg,.png,.webp"
             onChange={handleSelect}
           />
         </>

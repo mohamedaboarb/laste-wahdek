@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Baby, CalendarDays, FileText, UserRoundPlus } from "lucide-react";
-
+import { ImageUploader } from "@/components/ui/ImageUploader";
+import { storageService } from "@/features/storage/storage.service";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +13,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import {
   Form,
   FormControl,
@@ -59,7 +59,6 @@ export function ChildDialog({ open, onOpenChange, child, onSubmit }: Props) {
           birthDate: child.birthDate ? new Date(child.birthDate) : new Date(),
         });
       } else {
-        // في حالة طفل جديد، قم بتصفير الحقول تماماً وتوليد ID فريد جديد
         form.reset({
           id: crypto.randomUUID(),
           fullName: "",
@@ -74,16 +73,23 @@ export function ChildDialog({ open, onOpenChange, child, onSubmit }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[calc(100vh-2rem)] overflow-y-auto rounded-3xl border-pink-100 bg-white p-0 shadow-[0_24px_70px_rgba(244,114,182,0.18)] sm:max-w-xl">
-        <DialogHeader className="border-b border-pink-100 bg-gradient-to-br from-pink-50 via-white to-violet-50 px-5 py-5 text-left sm:px-6">
+        <DialogHeader className="border-b border-pink-100 bg-linear-to-br from-pink-50 via-white to-violet-50 px-5 py-5 text-left sm:px-6">
           <DialogDescription className="sr-only">Child form</DialogDescription>
           <div className="flex items-center gap-3 pr-8">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-pink-500 shadow-sm">
-              {child ? (
-                <Baby className="h-6 w-6" />
-              ) : (
+            {child ? (
+              <ImageUploader
+                imageUrl={storageService.getPublicImageUrl(
+                  child.image_url,
+                  child.image_version,
+                )}
+                fallback={child.fullName || "Child"}
+                size="sm"
+              />
+            ) : (
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-pink-500 shadow-sm">
                 <UserRoundPlus className="h-6 w-6" />
-              )}
-            </div>
+              </div>
+            )}
 
             <div>
               <DialogTitle className="text-xl text-slate-950">

@@ -34,6 +34,11 @@ export const childSchema = z.object({
     .optional(),
 
   image_url: z.string().nullable().optional(),
+
+  // Transient cache-buster — never stored in the database.
+  // Set to Date.now() after a successful upload so the CDN URL
+  // gets a unique ?v= query param and bypasses the browser cache.
+  image_version: z.number().optional(),
 });
 
 export const profileSchema = z.object({

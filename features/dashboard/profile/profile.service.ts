@@ -244,6 +244,28 @@ export async function updateChildImage(
   return Boolean(data);
 }
 
+export async function deleteChild(childId: string): Promise<void> {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user)
+    throw { code: "unauthorized" } satisfies ProfileServiceError;
+
+  const { error } = await supabase
+    .from("children")
+    .delete()
+    .eq("id", childId)
+    .eq("profile_id", user.id);
+
+  if (error)
+    throw {
+      code: "db_error",
+      message: error.message,
+    } satisfies ProfileServiceError;
+}
+
 // read the email of the user
 export async function getCurrentUserEmail(): Promise<string | null> {
   const {

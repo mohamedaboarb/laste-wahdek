@@ -21,6 +21,7 @@ import { useAuth } from "@/contexts/auth-context";
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // إضافة حالة تحميل لمنع تفاعل المستخدم أثناء الجلب
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -120,7 +121,10 @@ export default function ProfilePage() {
 
         <MedicalRecordCard isEditing={isEditing} />
 
-        <ChildrenSection isEditing={isEditing} />
+        <ChildrenSection
+          isEditing={isEditing}
+          onUploadingChange={setIsUploading}
+        />
 
         {/* STICKY SAVE BAR */}
         {isEditing && (
@@ -145,11 +149,15 @@ export default function ProfilePage() {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isUploading}
                   className="inline-flex items-center gap-2 rounded-xl bg-pink-600 px-5 py-3 font-medium text-white transition hover:bg-pink-700 disabled:opacity-50"
                 >
                   <Save className="h-4 w-4" />
-                  {isSubmitting ? "Saving..." : "Save Changes"}
+                  {isSubmitting
+                    ? "Saving..."
+                    : isUploading
+                      ? "Uploading..."
+                      : "Save Changes"}
                 </button>
               </div>
             </div>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import {
   Plus,
   Pencil,
   Trash2,
+  Loader2,
   Calendar,
   ArrowRight,
   MoreVertical,
@@ -33,10 +34,14 @@ import {
 import { ImageUploader } from "../ui/ImageUploader";
 import { storageService } from "@/features/storage/storage.service";
 import { toast } from "sonner";
-import { updateChildImage } from "@/features/dashboard/profile/profile.service";
+import {
+  deleteChild,
+  updateChildImage,
+} from "@/features/dashboard/profile/profile.service";
 
 interface Props {
   isEditing: boolean;
+  onUploadingChange?: (uploading: boolean) => void;
 }
 
 function getChildAge(birthDate: ChildFormValues["birthDate"]) {
@@ -52,8 +57,9 @@ function formatChildBirthDate(birthDate: ChildFormValues["birthDate"]) {
   return format(date, "dd / MM / yyyy");
 }
 
-export function ChildrenSection({ isEditing }: Props) {
-  const { control, watch, setValue } = useFormContext<ProfileFormValues>();
+export function ChildrenSection({ isEditing, onUploadingChange }: Props) {
+  const { control, watch, setValue, reset, getValues } =
+    useFormContext<ProfileFormValues>();
 
   // 1. نقل الـ watch للأعلى لضمان قراءة البيانات بشكل صحيح في جميع الدوال
   const children = watch("children") || [];
@@ -69,6 +75,14 @@ export function ChildrenSection({ isEditing }: Props) {
   >();
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [uploadingIndices, setUploadingIndices] = useState<Set<number>>(
+    new Set(),
+  );
+  const [isDeletingChild, setIsDeletingChild] = useState(false);
+
+  useEffect(() => {
+    onUploadingChange?.(uploadingIndices.size > 0);
+  }, [uploadingIndices.size, onUploadingChange]);
 
   function handleAddChild() {
     setSelectedIndex(null);
@@ -91,13 +105,44 @@ export function ChildrenSection({ isEditing }: Props) {
     setDialogOpen(false);
   }
 
-  function handleDelete() {
-    if (deleteIndex === null) return;
-    remove(deleteIndex);
-    setDeleteIndex(null);
+  async function handleDelete() {
+    if (deleteIndex === null || isDeletingChild) return;
+
+    const child = children[deleteIndex];
+    const capturedIndex = deleteIndex;
+
+    setIsDeletingChild(true);
+    try {
+      // Step 1: delete image from storage (must succeed before touching DB)
+      if (child.image_url) {
+        await storageService.deleteImage(child.image_url);
+      }
+
+      // Step 2: delete DB row
+      await deleteChild(child.id);
+
+      // Step 3: remove from form array and sync the form defaults so that
+      // cancel() won't restore a child that has already been deleted from DB.
+      remove(capturedIndex);
+      reset(getValues());
+
+      setDeleteIndex(null);
+      toast.success("Child deleted successfully.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to delete child.",
+      );
+    } finally {
+      setIsDeletingChild(false);
+    }
   }
 
   async function handleChildImageUpload(index: number, file: File) {
+    // Prevent a second upload for the same child while one is already running.
+    if (uploadingIndices.has(index)) return;
+
+    setUploadingIndices((prev) => new Set(prev).add(index));
+
     try {
       const child = children[index];
 
@@ -107,28 +152,53 @@ export function ChildrenSection({ isEditing }: Props) {
         );
       }
 
-      // الخطوة 1: رفع الملف إلى Supabase Storage Bucket
+      // Step 1: upload new file to storage
       const imagePath = await storageService.uploadImage({
         folder: "images",
         id: child.id,
         file,
-        oldPath: child.image_url,
       });
 
-      // الخطوة 2: (جديد!) حفظ المسار في جدول الأطفال (children) مباشرة فور اكتمال الرفع
-      await updateChildImage(child.id, imagePath);
+      // Step 2: update DB — must succeed before we touch any existing file
+      const saved = await updateChildImage(child.id, imagePath);
+      if (!saved) {
+        // Child not yet in DB (added but form not submitted yet).
+        // image_url will be persisted on the next form save via saveProfile.
+        console.warn(
+          `Child ${child.id} is not yet in the database; image_url will be saved on next form submit.`,
+        );
+      }
 
-      // الخطوة 3: تحديث حالة الفورم المحلية لتظهر الصورة في الواجهة فوراً بشكل سلس
+      // Step 3: update form state so the new image renders immediately.
+      // image_version is a transient timestamp used as a ?v= cache-buster
+      // on the CDN URL — it is never written to the database.
+      const uploadedAt = Date.now();
       setValue(`children.${index}.image_url`, imagePath, {
         shouldDirty: true,
         shouldValidate: true,
       });
+      setValue(`children.${index}.image_version`, uploadedAt, {
+        shouldDirty: false,
+      });
 
-      toast.success("Image uploaded and saved to profile successfully.");
+      toast.success("Image uploaded successfully.");
+
+      // Step 4 (best-effort): remove any stale avatar files in the folder.
+      // The system is already consistent at this point, so a cleanup failure
+      // is only logged — the user's image is saved and the DB reference is correct.
+      storageService
+        .cleanupFolder("images", child.id, imagePath)
+        .catch((err) => console.warn("Failed to clean up old avatar files:", err));
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to upload image.",
       );
+    } finally {
+      setUploadingIndices((prev) => {
+        const next = new Set(prev);
+        next.delete(index);
+        return next;
+      });
     }
   }
 
@@ -228,13 +298,17 @@ export function ChildrenSection({ isEditing }: Props) {
                 <div className="flex flex-col items-center text-center">
                   {/* 🚀 الحل: تحويل المسار النسبي لرابط عام يعرض الصورة للمتصفح فوراً وحماية الـ fallback */}
                   <ImageUploader
-                    imageUrl={storageService.getPublicImageUrl(child.image_url)}
+                    imageUrl={storageService.getPublicImageUrl(
+                      child.image_url,
+                      child.image_version,
+                    )}
                     fallback={(child.fullName || "Child")
                       .split(" ")
                       .map((n) => n[0])
                       .join("")
                       .slice(0, 2)}
                     editable={isEditing}
+                    loading={uploadingIndices.has(index)}
                     onChange={(file) => handleChildImageUpload(index, file)}
                   />
 
@@ -310,19 +384,35 @@ export function ChildrenSection({ isEditing }: Props) {
       {/* DELETE CONFIRMATION */}
       <AlertDialog
         open={deleteIndex !== null}
-        onOpenChange={() => setDeleteIndex(null)}
+        onOpenChange={(open) => {
+          if (!open && !isDeletingChild) setDeleteIndex(null);
+        }}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Child</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. The child record will be permanently
-              removed.
+              This action cannot be undone. The child record and their profile
+              image will be permanently removed.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+            <AlertDialogCancel disabled={isDeletingChild}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isDeletingChild}
+              onClick={(e) => {
+                e.preventDefault();
+                handleDelete();
+              }}
+              className="gap-2"
+            >
+              {isDeletingChild && (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              )}
+              {isDeletingChild ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
