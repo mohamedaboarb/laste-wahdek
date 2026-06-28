@@ -188,7 +188,9 @@ export function ChildrenSection({ isEditing, onUploadingChange }: Props) {
       // is only logged — the user's image is saved and the DB reference is correct.
       storageService
         .cleanupFolder("images", child.id, imagePath)
-        .catch((err) => console.warn("Failed to clean up old avatar files:", err));
+        .catch((err) =>
+          console.warn("Failed to clean up old avatar files:", err),
+        );
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to upload image.",
@@ -296,7 +298,6 @@ export function ChildrenSection({ isEditing, onUploadingChange }: Props) {
                 )}
 
                 <div className="flex flex-col items-center text-center">
-                  {/* 🚀 الحل: تحويل المسار النسبي لرابط عام يعرض الصورة للمتصفح فوراً وحماية الـ fallback */}
                   <ImageUploader
                     imageUrl={storageService.getPublicImageUrl(
                       child.image_url,
@@ -408,9 +409,7 @@ export function ChildrenSection({ isEditing, onUploadingChange }: Props) {
               }}
               className="gap-2"
             >
-              {isDeletingChild && (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              )}
+              {isDeletingChild && <Loader2 className="h-4 w-4 animate-spin" />}
               {isDeletingChild ? "Deleting..." : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
