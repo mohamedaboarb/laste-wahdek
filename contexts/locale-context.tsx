@@ -12,7 +12,7 @@ import { translations, defaultLocale } from "@/lib/i18n";
 
 interface LocaleContextType {
   locale: Locale;
-  t: typeof translations.en;
+  t: (typeof translations)[Locale];
   setLocale: (locale: Locale) => void;
   dir: "rtl" | "ltr";
 }

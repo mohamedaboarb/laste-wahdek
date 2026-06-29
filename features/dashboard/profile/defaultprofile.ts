@@ -1,4 +1,4 @@
-import { ProfileFormValues } from "@/app/dashboard/DashboardSchemas/motherSchema";
+import { ProfileFormValues } from "@/features/dashboard/profile/motherSchema";
 
 export const emptyProfileValues: ProfileFormValues = {
   fullName: "",

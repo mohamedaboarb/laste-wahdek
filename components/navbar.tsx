@@ -12,6 +12,7 @@ import {
   Stethoscope,
   Home,
   LogOut,
+  WandSparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -60,8 +61,8 @@ export function Navbar() {
           href="/"
           className="group flex items-center gap-3 transition-all duration-300 hover:scale-[1.02]"
         >
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-primary to-secondary text-white shadow-lg shadow-primary/20 transition-all duration-300 group-hover:rotate-6">
-            <Heart className="h-5 w-5" fill="currentColor" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-b from-pink-500 via-rose-500 to-violet-500 text-white shadow-lg shadow-primary/20 transition-all duration-300 group-hover:rotate-6">
+            <WandSparkles className="h-5 w-5" fill="currentColor" />
           </div>
 
           <div className="hidden sm:block">

@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import {
   ProfileFormValues,
   ChildFormValues,
-} from "@/app/dashboard/DashboardSchemas/motherSchema";
+} from "@/features/dashboard/profile/motherSchema";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

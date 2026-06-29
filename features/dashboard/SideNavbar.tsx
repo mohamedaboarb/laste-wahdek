@@ -7,7 +7,7 @@ import {
   LayoutDashboard,
   LogOut,
   PackageCheckIcon,
-  Sparkles,
+  WandSparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -63,8 +63,8 @@ export default function SideNavbar() {
           href="/dashboard/mother"
           className="flex items-center gap-3 group"
         >
-          <div className="h-10 w-10 bg-linear-to-r from-[#A83279] to-[#D463A5] flex items-center justify-center text-white shadow-md shadow-[#A83279]/20 shrink-0">
-            <Sparkles size={20} />
+          <div className="h-10 w-10 bg-linear-to-b from-pink-500 via-rose-500 to-violet-500 flex items-center justify-center text-white shadow-md shadow-[#A83279]/20 shrink-0">
+            <WandSparkles size={20} />
           </div>
           <span
             className={cn(
@@ -92,7 +92,7 @@ export default function SideNavbar() {
                 "group relative flex h-10 shrink-0 items-center justify-center gap-3 rounded-sm px-3 text-sm font-semibold transition-all duration-200 md:justify-start",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
                 isActive
-                  ? "bg-secondary text-white"
+                  ? "bg-linear-to-r from-pink-500 via-rose-500 to-violet-500 text-white"
                   : "text-[#7A6E85] hover:bg-[#FAF8FC] hover:text-[#1E152A]",
               )}
             >

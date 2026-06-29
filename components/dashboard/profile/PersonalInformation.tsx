@@ -21,7 +21,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-import { ProfileFormValues } from "@/app/dashboard/DashboardSchemas/motherSchema";
+import { ProfileFormValues } from "@/features/dashboard/profile/motherSchema";
 import { DatePickerField } from "./DatePicker";
 
 interface Props {

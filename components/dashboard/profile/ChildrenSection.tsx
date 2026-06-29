@@ -30,8 +30,8 @@ import { ChildDialog } from "./ChildDialog";
 import {
   ChildFormValues,
   ProfileFormValues,
-} from "@/app/dashboard/DashboardSchemas/motherSchema";
-import { ImageUploader } from "../ui/ImageUploader";
+} from "@/features/dashboard/profile/motherSchema";
+import { ImageUploader } from "../../ui/ImageUploader";
 import { storageService } from "@/features/storage/storage.service";
 import { toast } from "sonner";
 import {

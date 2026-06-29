@@ -11,10 +11,10 @@ import { emptyProfileValues } from "@/features/dashboard/profile/defaultprofile"
 import {
   ProfileFormValues,
   profileSchema,
-} from "@/app/dashboard/DashboardSchemas/motherSchema";
-import { PersonalInfoCard } from "@/components/dashboard/PersonalInformation";
-import { MedicalRecordCard } from "@/components/dashboard/MedicalRecord";
-import { ChildrenSection } from "@/components/dashboard/ChildrenSection";
+} from "@/features/dashboard/profile/motherSchema";
+import { PersonalInfoCard } from "@/components/dashboard/profile/PersonalInformation";
+import { MedicalRecordCard } from "@/components/dashboard/profile/MedicalRecord";
+import { ChildrenSection } from "@/components/dashboard/profile/ChildrenSection";
 import { fetchProfile, saveProfile } from "./profile.service";
 import { useAuth } from "@/contexts/auth-context";
 

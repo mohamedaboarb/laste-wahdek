@@ -18,7 +18,7 @@ import {
   chronicDiseases,
   ProfileFormValues,
   psychologicalStatuses,
-} from "@/app/dashboard/DashboardSchemas/motherSchema";
+} from "@/features/dashboard/profile/motherSchema";
 
 import {
   Select,

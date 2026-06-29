@@ -1,7 +1,6 @@
+import SupscriptionPage from "@/features/dashboard/supscription/SupscriptionPage";
 import React from "react";
 
-function page() {
-  return <div>Supscription & Marketplace</div>;
+export default function Page() {
+  return <SupscriptionPage />;
 }
-
-export default page;

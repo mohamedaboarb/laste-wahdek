@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "react-datepicker/dist/react-datepicker.css";
-@custom-variant dark (&:is(.dark *));
 
 :root {
   --foreground: #030712;
@@ -37,41 +36,6 @@
   --sidebar-accent-foreground: #1a2332;
   --sidebar-border: #b8d4e8;
   --sidebar-ring: #004c80;
-}
-
-.dark {
-  --background: #0f1a2e;
-  --foreground: #e8f2fa;
-  --card: #1a2744;
-  --card-foreground: #ffaacc;
-  --popover: #1a2744;
-  --popover-foreground: #e8f2fa;
-  --primary: #a2d2ff;
-  --primary-foreground: #0f1a2e;
-  --secondary: #438e99;
-  --secondary-foreground: #ffffff;
-  --muted: #1a2744;
-  --muted-foreground: #8da4b8;
-  --accent: #2a7ab5;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #2a3f5c;
-  --input: #2a3f5c;
-  --ring: #6bb3c9;
-  --chart-1: #6bb3c9;
-  --chart-2: #438e99;
-  --chart-3: #2a7ab5;
-  --chart-4: #004c80;
-  --chart-5: #00385c;
-  --sidebar: #1a2744;
-  --sidebar-foreground: #e8f2fa;
-  --sidebar-primary: #6bb3c9;
-  --sidebar-primary-foreground: #0f1a2e;
-  --sidebar-accent: #2a3f5c;
-  --sidebar-accent-foreground: #e8f2fa;
-  --sidebar-border: #2a3f5c;
-  --sidebar-ring: #6bb3c9;
 }
 
 .hand-container {
@@ -182,14 +146,7 @@
     );
   }
 }
-/* @theme: extend {
-  .btn-primary {
-    @apply bg-primary text-background;
-  }
-  .btn-secondary {
-    @apply border-destructive text-white;
-  }
-} */
+
 @layer base {
   html {
     box-sizing: border-box;

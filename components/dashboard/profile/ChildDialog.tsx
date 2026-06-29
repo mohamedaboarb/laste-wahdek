@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import {
   ChildFormValues,
   childSchema,
-} from "@/app/dashboard/DashboardSchemas/motherSchema";
+} from "@/features/dashboard/profile/motherSchema";
 import { DatePickerField } from "./DatePicker";
 
 interface Props {
