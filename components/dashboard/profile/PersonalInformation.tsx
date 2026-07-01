@@ -1,7 +1,6 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
-
 import {
   FormControl,
   FormField,
@@ -9,9 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Input } from "@/components/ui/input";
-
 import {
   User,
   Mail,
@@ -20,7 +17,7 @@ import {
   CalendarDays,
   CheckCircle2,
 } from "lucide-react";
-
+import { useLocale } from "@/contexts/locale-context";
 import { ProfileFormValues } from "@/features/dashboard/profile/motherSchema";
 import { DatePickerField } from "./DatePicker";
 
@@ -33,11 +30,12 @@ const fieldClassName =
 
 export function PersonalInfoCard({ isEditing }: Props) {
   const { control } = useFormContext<ProfileFormValues>();
+  const { t } = useLocale();
+  const p = t.profile.personal;
 
   return (
     <section className="overflow-hidden rounded-[32px] border border-pink-100 bg-white shadow-[0_10px_40px_rgba(236,72,153,0.06)]">
       {/* Header */}
-
       <div className="flex items-center justify-between border-b border-slate-100 px-4 md:px-10 py-7">
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-pink-100 to-purple-100">
@@ -46,40 +44,35 @@ export function PersonalInfoCard({ isEditing }: Props) {
 
           <div>
             <h2 className="text-md md:text-2xl font-bold tracking-tight text-slate-900">
-              Personal Information
+              {p.title}
             </h2>
-
             <p className="mt-1 text-xs md:text-base text-slate-500">
-              Your personal profile details.
+              {p.subtitle}
             </p>
           </div>
         </div>
 
         <div className="hidden md:flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700">
           <CheckCircle2 className="h-4 w-4" />
-          Up to date
+          {p.upToDate}
         </div>
       </div>
 
       {/* Body */}
-
       <div className="p-4 md:p-10">
         <div className="grid gap-4 md:grid-cols-2">
           {/* Full Name */}
-
           <FormField
             control={control}
             name="fullName"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="mb-2 text-sm font-semibold text-slate-700">
-                  Full Name
+                  {p.fullName}
                 </FormLabel>
-
                 <FormControl>
                   <div className="relative">
-                    <User className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-
+                    <User className="absolute inset-s-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <Input
                       {...field}
                       disabled={!isEditing}
@@ -87,27 +80,23 @@ export function PersonalInfoCard({ isEditing }: Props) {
                     />
                   </div>
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
 
           {/* Email */}
-
           <FormField
             control={control}
             name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="mb-2 text-sm font-semibold text-slate-700">
-                  Email Address
+                  {p.email}
                 </FormLabel>
-
                 <FormControl>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-
+                    <Mail className="absolute inset-s-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <Input
                       {...field}
                       disabled
@@ -115,27 +104,23 @@ export function PersonalInfoCard({ isEditing }: Props) {
                     />
                   </div>
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
 
           {/* National ID */}
-
           <FormField
             control={control}
             name="nationalId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="mb-2 text-sm font-semibold text-slate-700">
-                  National ID
+                  {p.nationalId}
                 </FormLabel>
-
                 <FormControl>
                   <div className="relative">
-                    <CreditCard className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-
+                    <CreditCard className="absolute inset-s-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <Input
                       {...field}
                       disabled={!isEditing}
@@ -143,27 +128,23 @@ export function PersonalInfoCard({ isEditing }: Props) {
                     />
                   </div>
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
 
           {/* Phone */}
-
           <FormField
             control={control}
             name="phone"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="mb-2 text-sm font-semibold text-slate-700">
-                  Mobile Phone
+                  {p.phone}
                 </FormLabel>
-
                 <FormControl>
                   <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-
+                    <Phone className="absolute inset-s-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <Input
                       {...field}
                       disabled={!isEditing}
@@ -171,14 +152,12 @@ export function PersonalInfoCard({ isEditing }: Props) {
                     />
                   </div>
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
 
           {/* Birth Date */}
-
           <div className="md:col-span-2">
             <FormField
               control={control}
@@ -186,9 +165,8 @@ export function PersonalInfoCard({ isEditing }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="mb-2 text-sm font-semibold text-slate-700">
-                    Date of Birth
+                    {p.birthDate}
                   </FormLabel>
-
                   <FormControl>
                     <DatePickerField
                       value={field.value}
@@ -196,7 +174,6 @@ export function PersonalInfoCard({ isEditing }: Props) {
                       disabled={!isEditing}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}

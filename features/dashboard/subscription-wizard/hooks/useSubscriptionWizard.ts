@@ -15,7 +15,8 @@ import type {
 // Per architecture decision: wizard draft lives in sessionStorage.
 // Lost on tab close — acceptable trade-off, no DB draft table needed.
 
-const SESSION_KEY = "subscription_wizard_draft";
+// v2: invalidates any drafts saved with mock doctor/package IDs
+const SESSION_KEY = "subscription_wizard_draft_v2";
 
 function loadDraft(): Partial<WizardState> {
   if (typeof window === "undefined") return {};
@@ -83,10 +84,6 @@ export function useSubscriptionWizard() {
 
   const selectPackage = useCallback((pkg: Package) => {
     setState((prev) => {
-      // Cascade guard: when real package_eligibility data exists in Phase 2,
-      // check if current doctors are still eligible for the new package and
-      // clear them if not. For now (mock data, all doctors eligible for all
-      // packages) we preserve existing doctor selections.
       return {
         ...prev,
         selectedPackage: pkg,
@@ -121,7 +118,7 @@ export function useSubscriptionWizard() {
             prev.selectedPediatrician.scientificDegree,
             doctor.scientificDegree,
           );
-          selectedPackage = packages.find((p) => p.id === pkgId) ?? null;
+          selectedPackage = packages.find((p) => p.slug === pkgId) ?? null;
         }
 
         return {

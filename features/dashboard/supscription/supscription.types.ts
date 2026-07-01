@@ -1,11 +1,13 @@
 import { LucideIcon } from "lucide-react";
 
 export interface CurrentPlanCardProps {
+  subscriptionId: string;
   planName: string;
   price: number;
   currency: string;
 
-  status: "active" | "expired" | "cancelled";
+  status: "pending_payment" | "active" | "expired" | "cancelled";
+  cancelAtPeriodEnd: boolean;
 
   startDate: string;
   renewalDate: string;
@@ -13,8 +15,7 @@ export interface CurrentPlanCardProps {
   sessionsUsed: number;
   sessionsLimit: number;
 
-  onManage?: () => void;
-  onUpgrade?: () => void;
+  onCancelRequest: () => void;
 }
 export interface StatisticCardProps {
   title: string;

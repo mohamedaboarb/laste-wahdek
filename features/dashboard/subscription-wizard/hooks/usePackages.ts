@@ -1,38 +1,59 @@
 "use client";
 
-import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useLocale } from "@/contexts/locale-context";
+import { createClient } from "@/lib/supabase/client";
 import type { Package, PackageIcon } from "../types";
 
-// Session counts are not stored in i18n — they are fixed business rules per plan tier.
-const SESSION_COUNTS: Record<string, number> = {
-  essential: 2,
-  integrated: 4,
-  comprehensive: 6,
+// Maps DB English name → slug used throughout the app
+const NAME_TO_SLUG: Record<string, PackageIcon> = {
+  "Essential Care": "essential",
+  "Integrated Support": "integrated",
+  "Comprehensive Care": "comprehensive",
 };
 
 export function usePackages() {
   const { t } = useLocale();
+  const i18nPlans = t.landing.pricing.plans;
 
-  const data = useMemo<Package[]>(
-    () =>
-      t.landing.pricing.plans.map((plan) => ({
-        id: plan.id,
-        name: plan.name,
-        description: plan.description,
-        features: [...plan.features],
-        sessionsPerMonth: SESSION_COUNTS[plan.id] ?? 0,
-        priceEgp: parseInt(plan.price.replace(/,/g, ""), 10),
-        featured: plan.featured ?? false,
-        icon: plan.id as PackageIcon,
-      })),
-    [t],
-  );
+  const query = useQuery({
+    queryKey: ["packages"],
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("packages")
+        .select("id, name, price_egp, sessions_count")
+        .eq("is_active", true)
+        .order("sessions_count", { ascending: true });
+
+      if (error) throw error;
+      return data;
+    },
+    staleTime: 10 * 60 * 1000,
+  });
+
+  // Merge DB rows (id, price, sessions) with i18n (name, description, features, featured)
+  const merged: Package[] | undefined = query.data?.map((row) => {
+    const slug: PackageIcon = NAME_TO_SLUG[row.name] ?? "essential";
+    const i18n = i18nPlans.find((p) => p.id === slug);
+
+    return {
+      id: row.id,
+      slug,
+      name: i18n?.name ?? row.name,
+      description: i18n?.description ?? "",
+      features: i18n ? [...i18n.features] : [],
+      sessionsPerMonth: row.sessions_count,
+      priceEgp: Number(row.price_egp),
+      featured: i18n?.featured ?? false,
+      icon: slug,
+    };
+  });
 
   return {
-    data,
-    isLoading: false as const,
-    isError: false as const,
-    refetch: () => {},
+    data: merged,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    refetch: query.refetch,
   };
 }

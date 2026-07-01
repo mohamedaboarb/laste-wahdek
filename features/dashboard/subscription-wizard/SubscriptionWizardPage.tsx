@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/contexts/locale-context";
 import { useSubscriptionWizard } from "./hooks/useSubscriptionWizard";
+import { createSubscription } from "./subscription-wizard.service";
 import { TrustStrip } from "./components/TrustStrip";
 import { PackageSection } from "./components/PackageSection";
 import { DoctorSection } from "./components/DoctorSection";
@@ -97,18 +98,30 @@ export function SubscriptionWizardPage() {
   // ── Submit ─────────────────────────────────────────────────────────────────
   const handleSubmit = useCallback(async () => {
     if (!canProceedToPayment) return;
+    if (!state.selectedPackage || !state.selectedPediatrician || !state.selectedPsychologist) return;
+
     setIsSubmitting(true);
     setSubmitError(null);
+
     try {
-      // TODO (Phase 2): Supabase RPC + Paymob redirect
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await createSubscription(
+        state.selectedPackage.id,
+        state.selectedPediatrician.id,
+        state.selectedPsychologist.id,
+      );
+      // TODO (Phase 3): redirect to Paymob with the returned subscriptionId
       reset();
       router.push("/dashboard/mother/supscription");
-    } catch {
-      setSubmitError(sw.errors.somethingWrong);
+    } catch (err) {
+      const msg = (err as { message?: string }).message ?? "";
+      if (msg.includes("already_subscribed")) {
+        setSubmitError(sw.errors.alreadySubscribed);
+      } else {
+        setSubmitError(sw.errors.somethingWrong);
+      }
       setIsSubmitting(false);
     }
-  }, [canProceedToPayment, reset, router, sw]);
+  }, [canProceedToPayment, state, reset, router, sw]);
 
   // ── Pending logic ──────────────────────────────────────────────────────────
   const isPending = (section: WizardSection): boolean => {
@@ -161,7 +174,7 @@ export function SubscriptionWizardPage() {
               {sw.page.title}
             </h1>
 
-            <p className="text-xs leading-12 md:text-lg text-slate-600">
+            <p className="text-xs mt-1 lg:mt-3 md:text-lg text-slate-600">
               {sw.page.subtitle}
             </p>
           </div>

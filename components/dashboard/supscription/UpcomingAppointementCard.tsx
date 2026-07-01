@@ -2,22 +2,16 @@
 
 import { motion } from "framer-motion";
 import { CalendarDays, Clock3, UserRound, ArrowRight } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
+import { useLocale } from "@/contexts/locale-context";
 
 interface AppopintmentCardProps {
   hasAppointment: boolean;
-
   doctor?: string;
-
   specialization?: string;
-
   date?: string;
-
   time?: string;
-
   onView?: () => void;
-
   onBook?: () => void;
 }
 
@@ -30,15 +24,16 @@ export function UpcomingAppointmentCard({
   onBook,
   onView,
 }: AppopintmentCardProps) {
+  const { t } = useLocale();
+  const u = t.subscriptionDashboard.upcoming;
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       className="rounded-3xl border border-slate-100 bg-white p-7 shadow-sm"
     >
-      <h2 className="mb-6 text-xl font-bold text-slate-900">
-        Upcoming Appointment
-      </h2>
+      <h2 className="mb-6 text-xl font-bold text-slate-900">{u.title}</h2>
 
       {hasAppointment ? (
         <>
@@ -49,7 +44,6 @@ export function UpcomingAppointmentCard({
 
             <div className="flex-1">
               <h3 className="text-lg font-semibold">{doctor}</h3>
-
               <p className="text-slate-500">{specialization}</p>
             </div>
           </div>
@@ -57,32 +51,27 @@ export function UpcomingAppointmentCard({
           <div className="mt-7 grid gap-5 md:grid-cols-2">
             <div className="flex items-center gap-3">
               <CalendarDays className="text-pink-500" />
-
               <span>{date}</span>
             </div>
 
             <div className="flex items-center gap-3">
               <Clock3 className="text-pink-500" />
-
               <span>{time}</span>
             </div>
           </div>
 
           <Button onClick={onView} className="mt-8 rounded-xl">
-            View Appointment
+            {u.viewAppointment}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </>
       ) : (
         <div className="rounded-2xl bg-pink-50 p-8 text-center">
-          <h3 className="text-xl font-semibold">No upcoming appointments</h3>
-
-          <p className="mt-2 text-slate-500">
-            Schedule your next consultation.
-          </p>
+          <h3 className="text-xl font-semibold">{u.none}</h3>
+          <p className="mt-2 text-slate-500">{u.noneSub}</p>
 
           <Button className="mt-6 rounded-xl" onClick={onBook}>
-            Book Session
+            {u.bookSession}
           </Button>
         </div>
       )}

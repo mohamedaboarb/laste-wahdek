@@ -7,7 +7,8 @@ export type PackageIcon = "essential" | "integrated" | "comprehensive";
 export type WizardMode = "package-first" | "doctor-first";
 
 export interface Package {
-  id: string;
+  id: string;        // UUID from DB
+  slug: PackageIcon; // "essential" | "integrated" | "comprehensive"
   name: string;
   description: string;
   sessionsPerMonth: number;

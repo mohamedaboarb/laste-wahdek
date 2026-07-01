@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "@/contexts/locale-context";
 import { SubscriptionPlan } from "@/features/dashboard/supscription/supscription.types";
 import { PlanCard } from "./PlanCard";
 
@@ -10,16 +11,14 @@ interface Props {
 }
 
 export function PlansSection({ currentPlanId, plans, onSelectPlan }: Props) {
+  const { t } = useLocale();
+  const p = t.subscriptionDashboard.plans;
+
   return (
     <section className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">
-          Available Care Packages
-        </h2>
-
-        <p className="mt-2 text-slate-500">
-          Upgrade or change your subscription at any time.
-        </p>
+        <h2 className="text-2xl font-bold text-slate-900">{p.sectionTitle}</h2>
+        <p className="mt-2 text-slate-500">{p.sectionSubtitle}</p>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-3">
