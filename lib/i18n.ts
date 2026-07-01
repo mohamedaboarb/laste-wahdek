@@ -89,11 +89,12 @@ export const translations = {
           "جميع الجلسات في كل الباقات مدتها 30 دقيقة كحد أقصى، ويتم حجزها تلقائياً حسب توفر الطبيب والأم.",
         plans: [
           {
-            id: "basic",
+            id: "essential",
             name: "الرعاية الأساسية",
             description:
               "المتابعة الروتينية، التوجيه الأولي، والإجابة على الأسئلة اليومية الشائعة.",
             price: "450",
+            currency: "ج.م",
             featured: false,
             cta: "اشتركي الآن",
             features: [
@@ -109,6 +110,7 @@ export const translations = {
             description:
               "التعامل مع تحديات محددة وأكثر عمقاً: تأخر نطق، تعديل سلوك، اضطرابات نمو، ودعم نفسي للأم.",
             price: "1,200",
+            currency: "ج.م",
             featured: true,
             cta: "ابدئي رحلتك اليوم",
             features: [
@@ -125,6 +127,7 @@ export const translations = {
             description:
               "الحالات الدقيقة والمعقدة التي تتطلب خبرة طبية ونفسية كبرى: توحد، ADHD، واستشارات تخصصية.",
             price: "2,200",
+            currency: "ج.م",
             featured: false,
             cta: "احصلي على رعاية تخصصية",
             features: [
@@ -455,7 +458,7 @@ export const translations = {
       close: "إغلاق",
       years: "سنوات",
       save: "حفظ",
-      cancel: "إلغاء",
+      back: "الرجوع للوحة التحكم",
       orContinueWith: "أو",
       googleSignIn: "تسجيل الدخول باستخدام جوجل",
       exceed: "يتجاوز",
@@ -510,6 +513,108 @@ export const translations = {
     Specialties: {
       pediatrician: "طبيب أطفال",
       psychologist: "أخصائي نفسي",
+    },
+    subscriptionWizard: {
+      page: {
+        title: "كوني فريق رعايتك",
+        subtitle: "ابدئي بناء فريقك الطبي الذي سيرافق عائلتكِ في كل خطوة",
+      },
+      modeToggle: {
+        label: "كيف تريدين البدء؟",
+        packageFirst: "اختاري الباقة أولاً",
+        doctorFirst: "اختاري الطبيب أولاً",
+      },
+      trustStrip: {
+        secure: "وسيلة دفع آمنة",
+        cancel: "إلغاء في أي وقت",
+        noHidden: "بدون رسوم مخفية",
+      },
+      sections: {
+        package: {
+          title: "اختاري باقة الرعاية",
+          subtitle:
+            "باقتك تحدد عدد الجلسات الشهرية ومستوى الرعاية المقدمة لعائلتك",
+          step: "الباقة",
+        },
+        pediatrician: {
+          title: "قابلي طبيب أطفال عائلتك",
+          subtitle:
+            "طبيب الأطفال سيكون شريكك الطبي الأساسي في متابعة صحة طفلك ونموه",
+          step: "طبيب الأطفال",
+          partnerContext:
+            "سيتعاون طبيب الأطفال الخاص بكِ، {name}، مع أخصائي النفس الذي ستختارينه لتشكيل فريق رعاية متكامل.",
+        },
+        psychologist: {
+          title: "أكملي فريق رعايتك",
+          subtitle:
+            "سيعمل أخصائي النفس جنباً إلى جنب مع طبيب الأطفال لتقديم رعاية شاملة ومستمرة لعائلتك",
+          step: "الأخصائي النفسي",
+          partnerContext:
+            "طبيب أطفالكِ، {name}، سيتشارك مع أخصائي النفس الذي ستختارينه أدناه لتشكيل فريق الرعاية الكامل.",
+        },
+        review: {
+          title: "مراجعة فريق رعايتك",
+          subtitle: "كل شيء جاهز؟ أكدي اختياراتك وابدئي رحلة رعاية عائلتك",
+          step: "المراجعة",
+          autoAssigned: "تم اختيار الباقة تلقائياً بناءً على درجة خبرة أطبائك",
+        },
+      },
+      packages: {
+        sessionsPerMonth: "جلسة / شهر",
+        mostPopular: "الأكثر شيوعاً",
+        selectPlan: "اختاري هذه الباقة",
+        selected: "✓ تم الاختيار",
+        egpPerMonth: "ج.م / شهر",
+      },
+      doctors: {
+        verified: "موثق",
+        availableToday: "متاح",
+        reviews: "تقييم",
+        families: "عائلة",
+        onlySpotLeft: "مقعد متبق فقط",
+        onlySpotsLeft: "مقاعد متبقية فقط",
+        atCapacity: "مكتمل العدد",
+        searchPlaceholder: "ابحثي عن طبيب...",
+        filterAvailableToday: "متاح اليوم",
+        noResults: "لا يوجد أطباء",
+        noResultsFiltered: "جربي تعديل الفلاتر",
+        clearFilters: "مسح الفلاتر",
+        choosePediatrician: "اختاري كطبيب أطفال",
+        choosePsychologist: "اختاري كأخصائي نفس",
+        yourPediatrician: "طبيب أطفالك",
+        yourPsychologist: "أخصائي النفس الخاص بعائلتك",
+        experienceYears: "سنوات خبرة",
+        loadError: "تعذّر تحميل الأطباء.",
+      },
+      review: {
+        carePlan: "باقة الرعاية",
+        pediatrician: "طبيب الأطفال",
+        psychologist: "أخصائي النفس الخاص بعائلتك",
+        monthlyTotal: "الإجمالي الشهري (شامل الضريبة)",
+        billedMonthly: "يتم الدفع شهرياً. يمكنك الإلغاء قبل تاريخ التجديد.",
+        confirmPay: "تأكيد ودفع رسوم فريق رعايتي",
+        confirming: "جاري التأكيد...",
+        securePay: "وسيلة دفع آمنة",
+        noCharge: "لا يتم الخصم قبل التأكيد النهائي",
+        errorMessage: "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      },
+      careTeam: {
+        title: "فريق رعايتك",
+        inProgress: "جارٍ التشكيل...",
+        monthlyTotal: "الإجمالي الشهري",
+        vatIncluded: "شامل الضريبة",
+        confirmTeam: "تأكيد فريق الرعاية",
+        completeAllSteps: "أكملي جميع الخطوات",
+        guidancePackage: "ابدئي باختيار الباقة",
+        guidancePediatrician: "اختاري طبيب الأطفال التالي",
+        guidancePsychologist: "اختاري أخصائي النفس للمتابعة",
+        autoAssignedLabel: "ستُحدد تلقائياً بناءً على فريقك",
+      },
+      errors: {
+        loadFailed: "تعذّر التحميل الآن.",
+        retry: "إعادة المحاولة",
+        somethingWrong: "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      },
     },
   },
   en: {
@@ -599,11 +704,12 @@ export const translations = {
           "Every session in every package is a strict 30-minute maximum, booked automatically based on doctor and mother availability.",
         plans: [
           {
-            id: "basic",
+            id: "essential",
             name: "Essential Care",
             description:
               "Routine follow-up, initial guidance, and answers to everyday common questions.",
             price: "450",
+            currency: "EGP",
             featured: false,
             cta: "Subscribe Now",
             features: [
@@ -619,6 +725,7 @@ export const translations = {
             description:
               "Handling specific, deeper challenges: speech delay, behavior support, developmental disorders, and psychological support for mothers.",
             price: "1,200",
+            currency: "EGP",
             featured: true,
             cta: "Start Your Journey Today",
             features: [
@@ -635,6 +742,7 @@ export const translations = {
             description:
               "Precise, complex cases requiring major medical and psychological expertise: autism, ADHD, and specialized consultations.",
             price: "2,200",
+            currency: "EGP",
             featured: false,
             cta: "Get Specialized Care",
             features: [
@@ -970,7 +1078,7 @@ export const translations = {
       close: "Close",
       years: "years",
       save: "Save",
-      cancel: "Cancel",
+      back: "Back to dashboard",
       orContinueWith: "or",
       googleSignIn: "Sign in with Google",
       exceed: "exceed",
@@ -1025,6 +1133,113 @@ export const translations = {
     Specialties: {
       pediatrician: "Pediatrician",
       psychologist: "Psychologist",
+    },
+    subscriptionWizard: {
+      page: {
+        title: "Build your care team",
+        subtitle:
+          "Start building the medical team that will accompany your family every step of the way",
+      },
+      modeToggle: {
+        label: "How would you like to start?",
+        packageFirst: "choose by package",
+        doctorFirst: "Choose by doctor",
+      },
+      trustStrip: {
+        secure: "Secure payment",
+        cancel: "Cancel anytime",
+        noHidden: "No hidden fees",
+      },
+      sections: {
+        package: {
+          title: "Choose your care plan",
+          subtitle:
+            "Your plan determines how many sessions your family receives each month and what's included in your care journey.",
+          step: "Plan",
+        },
+        pediatrician: {
+          title: "Meet your child's pediatrician",
+          subtitle:
+            "Your pediatrician will be your primary medical partner — following your child's health, growth, and development every step of the way.",
+          step: "Pediatrician",
+          partnerContext:
+            "Your pediatrician, {name}, will partner with the psychologist you choose to form your complete care team.",
+        },
+        psychologist: {
+          title: "Complete your care team",
+          subtitle:
+            "Your psychologist will work alongside your pediatrician to provide holistic, continuous support for your family.",
+          step: "Psychologist",
+          partnerContext:
+            "Your pediatrician, {name}, will partner with the psychologist you choose below to form your complete care team.",
+        },
+        review: {
+          title: "Review your care team",
+          subtitle:
+            "Everything looks good? Confirm your selections and set up your family's care journey.",
+          step: "Review",
+          autoAssigned: "Plan auto-matched based on your doctors' expertise",
+        },
+      },
+      packages: {
+        sessionsPerMonth: "sessions / month",
+        mostPopular: "Most Popular",
+        selectPlan: "Choose this plan",
+        selected: "✓ Selected",
+        egpPerMonth: "EGP / month",
+      },
+      doctors: {
+        verified: "Verified",
+        availableToday: "Available",
+        reviews: "reviews",
+        families: "families",
+        onlySpotLeft: "spot left",
+        onlySpotsLeft: "spots left",
+        atCapacity: "At capacity",
+        searchPlaceholder: "Search doctors...",
+        filterAvailableToday: "Available today",
+        noResults: "No doctors found",
+        noResultsFiltered: "Try adjusting your filters",
+        clearFilters: "Clear filters",
+        choosePediatrician: "Choose as your pediatrician",
+        choosePsychologist: "Choose as your psychologist",
+        yourPediatrician: "Your pediatrician",
+        yourPsychologist: "Your family's psychologist",
+        experienceYears: "yrs experience",
+        loadError: "Unable to load doctors.",
+      },
+      review: {
+        carePlan: "Your care plan",
+        pediatrician: "Your pediatrician",
+        psychologist: "Your family's psychologist",
+        monthlyTotal: "Monthly total (VAT included)",
+        billedMonthly:
+          "Billed monthly. Cancel anytime before your next renewal date.",
+        confirmPay: "Confirm & pay for my care team",
+        confirming: "Confirming your care team…",
+        securePay: "Secure payment",
+        noCharge: "No charge until confirmed",
+        errorMessage:
+          "Something went wrong. Please try again or contact support.",
+      },
+      careTeam: {
+        title: "Your care team",
+        inProgress: "Building in progress…",
+        monthlyTotal: "Monthly total",
+        vatIncluded: "VAT included",
+        confirmTeam: "Confirm care team",
+        completeAllSteps: "Complete all steps",
+        guidancePackage: "Start by choosing your plan",
+        guidancePediatrician: "Choose your pediatrician next",
+        guidancePsychologist: "Choose your psychologist to continue",
+        autoAssignedLabel: "Auto-assigned based on your team",
+      },
+      errors: {
+        loadFailed: "Unable to load right now.",
+        retry: "Try again",
+        somethingWrong:
+          "Something went wrong. Please try again or contact support.",
+      },
     },
   },
 } as const;
